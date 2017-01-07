@@ -1,4 +1,4 @@
-#C++講座資料
+#C++Siv3D講座資料
 
 ##newとdelete
 
@@ -12,8 +12,8 @@ class MyClass{
 public:
 	int x;
 
-	MyClass(int xx):
-	x(xx)
+	MyClass(int _x):
+	x(_x)
 	{
 	}
 
@@ -42,8 +42,8 @@ class MyClass{
 public:
 	int x;
 	
-	MyClass(int xx):
-	x(xx)
+	MyClass(int _x):
+	x(_x)
 	{
 		std::cout << "コンストラクタが呼ばれました" << std::endl;
 	}
@@ -82,8 +82,8 @@ class MyClass{
 public:
 	int a;
 
-	MyClass(int aa):
-		a(aa)
+	MyClass(int _a):
+		a(_a)
 	{
 	}
 };
@@ -103,20 +103,20 @@ public:
 
 class Base{
 public:
-	Base(int xx):
-		x(xx)
+	Base(int _x):
+		x(_x)
 	{
 	}
 	int x;
-	void Show(){
+	void show(){
 		std::cout << "x:" << x << std::endl;
 	}
 };
 
 class Derived : public Base{
 public:
-	Derived(int xx):
-		Base(xx)
+	Derived(int _x):
+		Base(_x)
 	{
 	}
 };
@@ -125,10 +125,10 @@ public:
 int main(void){
 
 	Base obj_b(12);
-	obj_b.Show();
+	obj_b.show();
 
 	Derived obj_d(23);
-	obj_d.Show();
+	obj_d.show();
 
 	return 0;
 }
@@ -150,7 +150,7 @@ public:
 基底クラス名(引数1,引数2, ...)　には基底クラスに渡す引数を書く。
 アクセスがpublicだと基本クラスのpublicメンバが派生クラスのpublicメンバに、privateだと基本クラスのpublicメンバが派生クラスのprivateメンバになる。
 
-##演習問題(DXライブラリ)
+##演習問題(Siv3D)
 今回はEnemyを複数出すだけなので、前半課題とは別に、サンプルプロジェクトを元にを作った方が楽かもしれない。  
 以下のようなEnenyクラスを用意した。
 
@@ -163,9 +163,9 @@ public:
 class Enemy {
 public:
 	double x, y, vx, vy;
-	Enemy(double xx, double yy);
-	void Update();
-	void Draw();
+	Enemy(double _x, double _y);
+	void update();
+	void draw();
 };
 
 ```
@@ -173,26 +173,37 @@ public:
 >Enemy.cpp
 
 ```cpp
-#include <DxLib.h>
+#include <Siv3D.h>
 #include "Enemy.h"
 
-Enemy::Enemy(double xx, double yy) {
-	x = xx;
-	y = yy;
+Enemy::Enemy(double _x, double _y) {
+	x = _x;
+	y = _y;
 	vx = GetRand(10) - 5;
 	vy = GetRand(10) - 5;
 }
 
-void Enemy::Update() {
+void Enemy::update() {
 	x += vx;
 	y += vy;
 }
 
-void Enemy::Draw() {
-	DrawCircle(x, y, 24, GetColor(255, 0, 0), 1);
+void Enemy::draw() {
+	drawCircle(x, y, 24, GetColor(255, 0, 0), 1);
 }
 ```
 
 1. Enemy型へのポインタを要素に持つvectorを用意し、newを使って敵を複数生成せよ。 
 
 1. 画面外に行った敵を削除せよ。newで動的確保した領域もdeleteで解放すること。
+
+> ヒント：remove_ifを用いた形式だと、削除する要素それぞれに対してdeleteを行えないので、Vol6で紹介したwhileループを用いた形式でvectorの要素を削除するとよい。
+
+	auto it = vec.begin();
+	while(it != vec.end()){
+		if(条件){
+			it = vec.erase(it);
+		}else{
+			it++;
+		}
+	}

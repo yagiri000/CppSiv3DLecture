@@ -1,7 +1,7 @@
-#C++講座資料
+#C++Siv3D講座資料
 
 今回は動的配列vectorの基本について学ぶ。
-演習では、DXライブラリを用いて複数の敵を生成する。
+演習では、Siv3Dを用いて複数の敵を生成する。
 
 
 ## vectorの基本的な使い方
@@ -69,8 +69,8 @@ class MyClass{
 public:
 	int x;
 
-	MyClass(int xx){
-		x = xx;
+	MyClass(int _x){
+		x = _x;
 	}
 };
 
@@ -101,17 +101,17 @@ int main(void){
 >ヒント：ランダムな0~9の数を生成するにはrand()%10とすればよい。
 （今回はsrandとかは呼ばなくていいです。より性能の高い乱数生成器が入っているrandomヘッダーに関して詳しく知りたければはこちら→[ああああ]）
 
-1. 以下の様なクラスMyClassを用意した。MyClassのvectorを用意し、vectorにMyClassを10個追加し、すべての要素のShow()関数を呼び出せ。xの値はランダムな数でよい。
+1. 以下の様なクラスMyClassを用意した。MyClassのvectorを用意し、vectorにMyClassを10個追加し、すべての要素のshow()関数を呼び出せ。xの値はランダムな数でよい。
 
 		class MyClass{
 		public:
 			int x;
 
-			MyClass(int xx){
-				x = xx;
+			MyClass(int _x){
+				x = _x;
 			}
 
-			void Show(){
+			void show(){
 				std::cout << "xは：" << x << std::endl;
 			}
 		};
@@ -125,14 +125,14 @@ Vector2クラスのvectorを用意し、rand()などを使って適当な座標�
 			int x;
 			int y;
 			
-			Vector2(int xx, int yy){
-				x = xx;
-				y = yy;
+			Vector2(int _x, int _y){
+				x = _x;
+				y = _y;
 			}
 		};
 
-## 演習問題(DXライブラリ)
-今回は、前回のプロジェクトからそのままEnemyクラスを書き換えてもいいし、サンプルプロジェクトを元に1から作り直しても良い。
+## 演習問題(Siv3D)
+今回は、前回のプロジェクトからそのままEnemyクラスを書き換えてもいいし、1から作り直しても良い。
 
 1. 以下の様なEnemyクラスを用意した。Enemyクラスのインスタンスを作り、動作を確認せよ。
 
@@ -140,32 +140,30 @@ Vector2クラスのvectorを用意し、rand()などを使って適当な座標�
 
 		class Enemy {
 		public:
-			double x, y, vx, vy;
-			Enemy(double xx, double yy);
-			void Update();
-			void Draw();
+			Vec2 pos;
+			Vec2 velocity;
+			Enemy(Vec2 _pos);
+			void update();
+			void draw();
 		};
 
 	>Enemy.cpp
 
-		#include <DxLib.h>
-		#include "Enemy.h"
-
-		Enemy::Enemy(double xx, double yy) {
-			x = xx;
-			y = yy;
-			vx = 0;
-			vy = 1.0;
+		Enemy::Enemy(Vec2 _pos):
+			pos(_pos),
+			velocity(0.0, 1.0)
+		{
 		}
 
-		void Enemy::Update() {
-			x += vx;
-			y += vy;
+		void Enemy::update() {
+			pos += velocity;
 		}
 
-		void Enemy::Draw() {
-			DrawCircle(x, y, 24, GetColor(255, 0, 0), 1);
+		//エネミー（円）を描画
+		void Enemy::draw() {
+			Circle(pos, 30.0).draw(Color(255, 0, 0));
 		}
+
 
 
 
@@ -174,44 +172,49 @@ Vector2クラスのvectorを用意し、rand()などを使って適当な座標�
 1. Zキーが押されたらランダムな座標に敵が出るようにせよ。
 
 1. 現在、メインループ内でEnemyのvectorをfor文で回していると思う。  
-メインループ内はできるだけすっきりさせたい。そこで、Enemyのvectorをメンバに持ち、Updateを呼ぶとメンバのEnemyのUpdateをすべて呼ぶEnemyManagerクラスを作り、メインループ内ではEnemyManagerのUpdateを呼ぶだけでEnemyすべてが更新され、EnemyManagerのDrawを呼ぶだけですべての敵が描画されるようにする。また、AddEnemy関数を持ち、それが呼ばれると敵を追加する。  
+メインループ内はできるだけすっきりさせたい。そこで、Enemyのvectorをメンバに持ち、updateを呼ぶとメンバのEnemyのupdateをすべて呼ぶEnemyManagerクラスを作り、メインループ内ではEnemyManagerのupdateを呼ぶだけでEnemyすべてが更新され、EnemyManagerのdrawを呼ぶだけですべての敵が描画されるようにする。また、add関数を持ち、それが呼ばれると敵を追加する。  
 EnemyManagerクラスを作り、敵を管理せよ。  
 
 		> EnemyManager.h
 
 			#pragma once
-			#include "Enemy.h"
 			#include <vector>
+			#include <Siv3D.hpp>
+			#include "Enemy.h"
 
 			class EnemyManager {
 			public:
 				std::vector<Enemy> enemies;
-				void Update();
-				void Draw();
-				void AddEnemy(double x, double y);
+				void update();
+				void draw();
+				void add(Vec2 pos);
 			};
 
 		> EnemyManager.cpp
 
 			#include "EnemyManager.h"
 
-			void EnemyManager::Update()
+			void EnemyManager::update()
 			{
 				// ここを実装
 			}
 
-			void EnemyManager::Draw()
+			void EnemyManager::draw()
 			{
 				// ここを実装
 			}
 
-			void EnemyManager::AddEnemy(double x, double y)
+			void EnemyManager::add(Vec2 pos)
 			{
 				// ここを実装
 			}
+
 
 
 1. Enemy.h, Enemy.cppとは別にEnemyManager.h, EnemyManager.cppを作り、適切にファイル分けをせよ。
 
 1. 現在の敵の数を画面左上に表示せよ。ヒント：vectorのsize関数
+
+> Tips  
+> Siv3Dにはvectorと同じように使える動的配列、Arrayがある。本資料ではC++とSTLしか使えない極限の環境を想定して今後もvectorを使うが、Arrayはvectorより要素の削除が簡単に行えるので、Arrayも確認してみよう。  
 

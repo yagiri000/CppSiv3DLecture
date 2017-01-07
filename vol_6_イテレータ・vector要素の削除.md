@@ -1,5 +1,6 @@
-#C++講座資料
+#C++Siv3D講座資料
 
+今回はvectorの要素を削除する方法を学ぶ。Siv3Dを用いた演習では、画面外に出た敵を削除する。
 C++にはSTLという便利なライブラリが標準でついている。STLにはコンテナがあり、コンテナには便利な配列やリスト構造などがはじめから用意されている。vectorはコンテナの一種である。
 
 ##イテレータ
@@ -18,8 +19,8 @@ int main(){
 	std::vector<int> vec;
  
 	// 10個の要素を追加していく
-	for(int i = 0; i < 10; ++i ){
-		vec.push_back(rand()%100);
+	for(int i = 0; i < 10; i++ ){
+		vec.emplace_back(rand()%100);
 	}
  
 	//イテレータを用いて出力
@@ -54,8 +55,8 @@ int main(){
 	std::vector<int> vec;
  
 	// 10個の要素を追加していく
-	for(int i = 0; i < 10; ++i ){
-		vec.push_back(i);
+	for(int i = 0; i < 10; i++ ){
+		vec.emplace_back(i);
 	}
  
 	//イテレータを用いて出力
@@ -87,9 +88,9 @@ public:
 	int x;
 	int y;
 
-	Vector2(int xx, int yy) :
-		x(xx),
-		y(yy)
+	Vector2(int _x, int _y) :
+		x(_x),
+		y(_y)
 	{
 	}
 };
@@ -100,7 +101,7 @@ int main(){
 
 	//適当な値のVector2を5個入れる
 	for (int i = 0; i < 5; i++){
-		vec.push_back(Vector2(rand() % 100, rand() % 100));
+		vec.emplace_back(Vector2(rand() % 100, rand() % 100));
 	}
 	
 	//出力
@@ -126,7 +127,7 @@ int main(){
  
 	// 10個の要素を追加していく
 	for(int i = 0; i < 10; i++ ){
-		vec.push_back(i);
+		vec.emplace_back(i);
 	}
  
 	//イテレータを用いて出力
@@ -156,7 +157,7 @@ int main(){
 
 ##条件にあった要素の削除
 条件にあった複数の要素を削除するには以下のようにする。わりとトリッキー。  
-（削除用の関数、remove_ifも存在するが、難しめなので後に紹介する。）  
+（削除用の関数、remove_ifは次回紹介する。）  
 vectorの要素を削除すると削除した要素を指していたイテレータが迷子になってしまう。erase関数を使って削除をすると、返り値として削除した要素の次の要素へのイテレータが返ってくるので、それをループ用のイテレータに入れる。
 
 ```cpp
@@ -169,7 +170,7 @@ int main(){
  
 	// 10個の要素を追加していく
 	for(int i = 0; i < 10; i++ ){
-		vec.push_back(i);
+		vec.emplace_back(i);
 	}
  
 	//出力
@@ -217,8 +218,8 @@ int main(){
 			int a;
 			int b;
 
-			MyClass(int aa, int bb):
-				a(aa),
+			MyClass(int _a, int bb):
+				a(_a),
 				b(bb)
 			{
 			}
@@ -229,53 +230,51 @@ int main(){
 
 
 
-
-##演習問題(DXライブラリ)
-今回はvol_3のDXライブラリ演習問題の続きから作るか、新しくサンプルプロジェクトからプログラムを書くことをオススメする。いずれにせよ今回はプレイヤーはいてもいなくてもいいし、敵がポインタ経由でプレイヤーの情報を受け取る必要はない。
+##演習問題(Siv3D)
+今回はvol_3のSiv3D演習問題の続きから作るか、新しくサンプルプロジェクトからプログラムを書くことをオススメする。いずれにせよ今回はプレイヤーはいてもいなくてもいいし、敵がポインタ経由でプレイヤーの情報を受け取る必要はない。
 
 1. 以下のようなEnemyクラスを用意した。Enemyのvectorを作り、敵を複数出せ。forループは、イテレータを用いて書くこと。
 
 		>Enemy.h
 
 		```cpp
-		#pragma once
+			#pragma once
+			#include <Siv3D.hpp>
 
-		class Enemy {
-		public:
-			double x, y, vx, vy;
-			Enemy(double xx, double yy);
-			void Update();
-			void Draw();
-		};
-
+			class Enemy {
+			public:
+				Vec2 pos;
+				Vec2 velocity;
+				Enemy(const Vec2& _pos);
+				void update();
+				void draw();
+			};
 		```
 
 		>Enemy.cpp
 
 		```cpp
-		#include <DxLib.h>
-		#include "Enemy.h"
+			# include "Enemy.h"
 
-		Enemy::Enemy(double xx, double yy) {
-			x = xx;
-			y = yy;
-			vx = GetRand(10) - 5;
-			vy = GetRand(10) - 5;
-		}
+			Enemy::Enemy(const Vec2& _pos):
+				pos(_pos),
+				velocity(RandomVec2(5.0))
+			{
+				// RandomVec2(double length)
+				// 半径length(今回は5.0)の2次元ベクトルを返す
+			}
 
-		void Enemy::Update() {
-			x += vx;
-			y += vy;
-		}
+			void Enemy::update() {
+				pos += velocity;
+			}
 
-		void Enemy::Draw() {
-			DrawCircle(x, y, 24, GetColor(255, 0, 0), 1);
-		}
-
+			void Enemy::draw() {
+				Circle(pos, 30.0).draw(Color(255, 0, 0));
+			}
 		```
 
-1. 前回の課題で、y座標が600を超えた敵(下の方の画面外に出た敵)を削除するようにせよ。  
+1. 前回の課題で、y座標が480を超えた敵(下の方の画面外に出た敵)を削除するようにせよ。  
 
-1. 画面外に出た敵を削除するようにせよ。
+1. 画面外に出た敵を削除するようにせよ。(ヒント：デフォルトの画面サイズは640*480)
 
 

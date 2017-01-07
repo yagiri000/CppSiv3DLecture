@@ -1,5 +1,6 @@
-#C++講座資料
+#C++Siv3D講座資料
 
+今回は前回とは別の、vectorの要素を削除する方法を学ぶ。演習問題では前回と同様敵を削除する。  
 vectorはコンテナの一種である。algorithmヘッダーにコンテナに対して削除・ソートなどを行う事ができる。
 今回はコンテナに対し条件に一致する要素を削除する関数、remove_ifを使い、要素を削除する。また条件の指定にラムダ式を用いる。
 
@@ -10,10 +11,10 @@ remove_ifは条件にあった要素を削除する。
 remove_ifを使うには、algorithmヘッダーをインクルードする。
 
 //remove_ifを実行し、条件にあった要素を後ろに詰める。
-auto rmviter = std::remove_if(vec.begin(),vec.end(), 関数ポインタ);
+auto rmvIter = std::remove_if(vec.begin(),vec.end(), 関数ポインタ);
 
 //後ろの方に詰められた要素を削除
-vec.erase( rmviter, vec.end() );
+vec.erase( rmvIter, vec.end() );
 
 
 remove\_ifの第一引数には削除するかを判定する範囲の先頭、第二引数には終端を書く。
@@ -27,7 +28,7 @@ remove\_ifの第三引数には削除の条件を返す関数の名前を書く�
 #include <algorithm>
 
 //3の倍数かどうかをたしかめて返す叙述関数
-bool IsMultipleThree(int x){
+bool isMultipleThree(int x){
 	return (x%3) == 0;
 }
 
@@ -37,7 +38,7 @@ int main(){
 
 	//0から数を入れる
 	for(int i = 0; i < 10; i++){
-		vec.push_back(i);
+		vec.emplace_back(i);
 	}
 
 	//表示
@@ -49,10 +50,10 @@ int main(){
 
 	//vecの中から3の倍数を後ろに詰める
 	//3の倍数かどうかの判定は3番目のパラメータで渡された関数ポインタで判定
-	auto rmviter = std::remove_if(vec.begin(), vec.end(), IsMultipleThree);
+	auto rmvIter = std::remove_if(vec.begin(), vec.end(), isMultipleThree);
 
 	//実際に削除
-	vec.erase( rmviter, vec.end() );
+	vec.erase( rmvIter, vec.end() );
 
 	//表示
 	for(auto i = vec.begin(); i < vec.end(); ++i){
@@ -81,8 +82,8 @@ class MyClass{
 public:
 	int a;
 
-	MyClass(int aa):
-		a(aa)
+	MyClass(int _a):
+		a(_a)
 	{
 	}
 };
@@ -152,7 +153,7 @@ int main(){
 	std::vector<int> vec;//int型の動的配列
 
 	for(int i = 0; i < 10; i++){
-		vec.push_back(i);
+		vec.emplace_back(i);
 	}
 
 	//表示
@@ -169,10 +170,10 @@ int main(){
 		};
 	
 	//vecの中から3の倍数を後ろに詰める
-	auto rmviter = std::remove_if(vec.begin(), vec.end(), isMulThree);
+	auto rmvIter = std::remove_if(vec.begin(), vec.end(), isMulThree);
 
 	//実際に削除
-	vec.erase( rmviter, vec.end() );
+	vec.erase( rmvIter, vec.end() );
 
 
 	//表示
@@ -201,7 +202,7 @@ int main(){
 	std::vector<int> vec;//int型の動的配列
 
 	for(int i = 0; i < 10; i++){
-		vec.push_back(i);
+		vec.emplace_back(i);
 	}
 
 	//表示
@@ -214,14 +215,14 @@ int main(){
 	
 	
 	//vecの中から3の倍数を後ろに詰める
-	auto rmviter = std::remove_if(vec.begin(),vec.end(),
+	auto rmvIter = std::remove_if(vec.begin(),vec.end(),
 		[](int x){
 			return (x % 3) == 0;
 		}
 	);
 
 	//実際に削除
-	vec.erase( rmviter, vec.end() );
+	vec.erase( rmvIter, vec.end() );
 
 
 	//表示
@@ -240,23 +241,46 @@ int main(){
 
 1. int型のvectorに0から9を入れ、remove_ifとラムダ式を用いて2の倍数を削除せよ。
 
-1. 以下のようなクラスMyClassを定義した。MyClassへのスマートポインタのvectorを用意し、適当な値のa(0~10ぐらい)を持ったデータを10個格納し、aが5以下の要素をremove_ifを用いて削除せよ。  
-MyClassへのスマートポインタのvectorとは、`std:vector<std::shared_ptr<MyClass>> vec`である。  
+## 演習問題(Siv3D)
 
+1. 前回同様にEnemyクラスを用意した。Enemyのvectorを作り、敵を複数生成せよ。
 
+		>Enemy.h
 
-```cpp
-class MyClass{
-public:
-	int a;
-	MyClass(int aa):
-		a(aa)
-	{
-	}
-};
-```
+		```cpp
+			#pragma once
+			#include <Siv3D.hpp>
 
-## 演習問題(DXライブラリ)
+			class Enemy {
+			public:
+				Vec2 pos;
+				Vec2 velocity;
+				Enemy(const Vec2& _pos);
+				void update();
+				void draw();
+			};
+		```
 
-1. Enemyのクラスへのスマートポインタを要素に持つvectorを用意し、敵を複数生成せよ。  
-領域確保はnewではなく、std::make_sharedを使うこと。要素の削除にはalgorithmのremove\_ifを使い、その条件の指定にはラムダ式を使用せよ。  
+		>Enemy.cpp
+
+		```cpp
+			# include "Enemy.h"
+
+			Enemy::Enemy(const Vec2& _pos):
+				pos(_pos),
+				velocity(RandomVec2(5.0))
+			{
+				// RandomVec2(double length)
+				// 半径length(今回は5.0)の2次元ベクトルを返す
+			}
+
+			void Enemy::update() {
+				pos += velocity;
+			}
+
+			void Enemy::draw() {
+				Circle(pos, 30.0).draw(Color(255, 0, 0));
+			}
+		```
+
+1. 画面外に出た敵を削除せよ。要素の削除にはalgorithmのremove\_ifを使い、その条件の指定にはラムダ式を使用せよ。  

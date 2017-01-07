@@ -1,77 +1,8 @@
-#C++講座 後半課題
+#C++講座 最終課題
 
-前半の課題をポリモーフィズムを用いて書き直せ。    
-練習として、敵の基底クラスへのスマートポインタのvectorに派生クラスを入れ、敵の削除にはremove_ifとラムダ式を使うこと。    
+前半の課題をポリモーフィズムを用いて書き直せ。練習として、敵の基底クラスへのスマートポインタのvectorに派生クラスを入れ、敵の削除にはremove_ifとラムダ式を使うこと。    
 
-以下にVol9~Vol12の解答例を示す。
-
-## vol_9課題(コンソール)
-
-> main.cpp を以下のように書き換え
-
-```cpp
-#include <DxLib.h>
-#include <iostream>
-#include <vector>
-
-#include "myglobal.h"
-#include "Enemy.h"
-
-int WINAPI WinMain( HINSTANCE hInstance , HINSTANCE hPrevInstance , LPSTR lpCmdLine , int nCmdShow )
-{
-	ChangeWindowMode( TRUE );//非全画面にセット
-	SetGraphMode( 800 , 600 , 32 );//画面サイズ指定
-	SetOutApplicationLogValidFlag( FALSE ) ;//Log.txtを生成しないように設定
-	if(DxLib_Init() == 1){return -1;}//初期化に失敗時にエラーを吐かせて終了
-
-	FontHandle = CreateFontToHandle( "Segoe UI" , 20 , 5 ,DX_FONTTYPE_ANTIALIASING_4X4) ;//フォントを読み込み
-
-	std::vector<Enemy*> enemies;
-
-	while( ProcessMessage()==0 )
-	{
-		ClearDrawScreen();//裏画面消す
-		SetDrawScreen( DX_SCREEN_BACK ) ;//描画先を裏画面に
-
-		GetMousePoint( &mousex, &mousey ); //マウス座標更新
-		KeyUpdate();//(自作関数)キー更新
-
-		// 敵を生成
-		if (keyState[KEY_INPUT_Z] == 1) {
-			enemies.emplace_back(new Enemy(GetRand(800), GetRand(200)));
-		}
-
-		// 敵削除
-		auto it = enemies.begin();
-		while (it != enemies.end()) {
-			if ((*it)->x > 800.0 || (*it)->x < 0.0 || (*it)->y > 600.0 || (*it)->y < 0.0) {//画面外に出ているか確認
-				delete *it;
-				it = enemies.erase(it);
-			}
-			else {
-				it++;
-			}
-		}
-
-		for (auto i = enemies.begin(); i < enemies.end(); i++) {
-			(*i)->Update();
-		}
-
-		for (auto i = enemies.begin(); i < enemies.end(); i++) {
-			(*i)->Draw();
-		}
-
-		// 敵の数を表示
-		DrawFormatString(30, 30, GetColor(255, 255, 255), "Enemy : %d", enemies.size());
-
-		ScreenFlip();//裏画面を表画面にコピー
-	}
-
-	DxLib_End();
-	return 0;
-}
-```
-
+以下にVol9~Vol12の演習問題(コンソール)の解答例を示す。
 
 ## vol_10課題(コンソール)
 
@@ -87,8 +18,8 @@ public:
 
 	}
 
-	virtual void Talk() {
-		std::cout << "基底クラスのTalk関数が呼ばれました。 重さは:" << weight << std::endl;
+	virtual void talk() {
+		std::cout << "基底クラスのtalk関数が呼ばれました。 重さは:" << weight << std::endl;
 	}
 };
 
@@ -98,7 +29,7 @@ public:
 
 	}
 
-	void Talk() {
+	void talk() {
 		std::cout << "わんわん　重さは:" << weight << std::endl;
 	}
 };
@@ -109,7 +40,7 @@ public:
 
 	}
 
-	void Talk() {
+	void talk() {
 		std::cout << "ふぇぇ…　重さは:" << weight << std::endl;
 	}
 };
@@ -120,7 +51,7 @@ public:
 
 	}
 	
-	void Talk() {
+	void talk() {
 		std::cout << "にゃー　重さは:" << weight << std::endl;
 	}
 };
@@ -132,90 +63,13 @@ int main() {
 	animals.emplace_back(new Cat(30));
 
 	for (auto i = animals.begin(); i < animals.end(); i++) {
-		(*i)->Talk();
+		(*i)->talk();
 	}
 
 	return 0;
 }
 ```
 
-
-## vol_10課題(DXライブラリ)
-解答例に添付
-
-
-## vol_11課題(DXライブラリ)
-
-> main.cppを以下のように書き換え
-
-```cpp
-#include <DxLib.h>
-#include <iostream>
-#include <vector>
-#include <memory>
-
-#include "myglobal.h"
-#include "Enemy.h"
-
-int WINAPI WinMain( HINSTANCE hInstance , HINSTANCE hPrevInstance , LPSTR lpCmdLine , int nCmdShow )
-{
-	ChangeWindowMode( TRUE );//非全画面にセット
-	SetGraphMode( 800 , 600 , 32 );//画面サイズ指定
-	SetOutApplicationLogValidFlag( FALSE ) ;//Log.txtを生成しないように設定
-	if(DxLib_Init() == 1){return -1;}//初期化に失敗時にエラーを吐かせて終了
-
-	FontHandle = CreateFontToHandle( "Segoe UI" , 20 , 5 ,DX_FONTTYPE_ANTIALIASING_4X4) ;//フォントを読み込み
-
-	std::vector<std::shared_ptr<IEnemy>> enemies;
-
-	while( ProcessMessage()==0 )
-	{
-		ClearDrawScreen();//裏画面消す
-		SetDrawScreen( DX_SCREEN_BACK ) ;//描画先を裏画面に
-
-		GetMousePoint( &mousex, &mousey ); //マウス座標更新
-		KeyUpdate();//(自作関数)キー更新
-
-		// 敵を生成
-		if (keyState[KEY_INPUT_A] == 1) {
-			enemies.emplace_back(std::make_shared<EnemyA>(GetRand(800), GetRand(200)));
-		}
-		if (keyState[KEY_INPUT_S] == 1) {
-			enemies.emplace_back(std::make_shared<EnemyB>(GetRand(800), GetRand(200)));
-		}
-		if (keyState[KEY_INPUT_D] == 1) {
-			enemies.emplace_back(std::make_shared<EnemyC>(GetRand(800), GetRand(200)));
-		}
-
-		// 敵削除
-		auto it = enemies.begin();
-		while (it != enemies.end()) {
-			if ((*it)->x > 800.0 || (*it)->x < 0.0 || (*it)->y > 600.0 || (*it)->y < 0.0) {//画面外に出ているか確認
-				it = enemies.erase(it);
-			}
-			else {
-				it++;
-			}
-		}
-
-		for (auto i = enemies.begin(); i < enemies.end(); i++) {
-			(*i)->Update();
-		}
-
-		for (auto i = enemies.begin(); i < enemies.end(); i++) {
-			(*i)->Draw();
-		}
-
-		// 敵の数を表示
-		DrawFormatString(30, 30, GetColor(255, 255, 255), "敵の数 : %d", enemies.size());
-
-		ScreenFlip();//裏画面を表画面にコピー
-	}
-
-	DxLib_End();
-	return 0;
-}
-```
 
 ## vol_12課題1(コンソール)
 
@@ -229,15 +83,15 @@ class MyClass {
 public:
 	int a;
 
-	MyClass(int aa) :
-		a(aa)
+	MyClass(int _a) :
+		a(_a)
 	{
 	}
 };
 
 
 // aが5以下だとtrue, そうでない場合はfalseを返す叙述関数
-bool IsMin5(const MyClass& ins) {
+bool isMin5(const MyClass& ins) {
 	return ins.a <= 5;
 }
 
@@ -256,7 +110,7 @@ int main() {
 	std::cout << std::endl;
 
 	// vecの中から3の倍数を後ろに詰める
-	auto rmvIter = std::remove_if(vec.begin(), vec.end(), IsMin5);
+	auto rmvIter = std::remove_if(vec.begin(), vec.end(), isMin5);
 
 	// 実際に削除
 	vec.erase(rmvIter, vec.end());
@@ -339,8 +193,8 @@ class MyClass {
 public:
 	int a;
 
-	MyClass(int aa) :
-		a(aa)
+	MyClass(int _a) :
+		a(_a)
 	{
 	}
 };
@@ -374,77 +228,6 @@ int main() {
 	}
 	std::cout << std::endl;
 
-	return 0;
-}
-```
-
-## vol_12課題(DXライブラリ)
-
-> main.cpp
-
-```cpp
-#include <DxLib.h>
-#include <iostream>
-#include <vector>
-#include <memory>
-#include <algorithm>
-
-#include "myglobal.h"
-#include "Enemy.h"
-
-int WINAPI WinMain( HINSTANCE hInstance , HINSTANCE hPrevInstance , LPSTR lpCmdLine , int nCmdShow )
-{
-	ChangeWindowMode( TRUE );//非全画面にセット
-	SetGraphMode( 800 , 600 , 32 );//画面サイズ指定
-	SetOutApplicationLogValidFlag( FALSE ) ;//Log.txtを生成しないように設定
-	if(DxLib_Init() == 1){return -1;}//初期化に失敗時にエラーを吐かせて終了
-
-	FontHandle = CreateFontToHandle( "Segoe UI" , 20 , 5 ,DX_FONTTYPE_ANTIALIASING_4X4) ;//フォントを読み込み
-
-	std::vector<std::shared_ptr<IEnemy>> enemies;
-
-	while( ProcessMessage()==0 )
-	{
-		ClearDrawScreen();//裏画面消す
-		SetDrawScreen( DX_SCREEN_BACK ) ;//描画先を裏画面に
-
-		GetMousePoint( &mousex, &mousey ); //マウス座標更新
-		KeyUpdate();//(自作関数)キー更新
-
-		// 敵を生成
-		if (keyState[KEY_INPUT_A] == 1) {
-			enemies.emplace_back(std::make_shared<EnemyA>(GetRand(800), GetRand(200)));
-		}
-		if (keyState[KEY_INPUT_S] == 1) {
-			enemies.emplace_back(std::make_shared<EnemyB>(GetRand(800), GetRand(200)));
-		}
-		if (keyState[KEY_INPUT_D] == 1) {
-			enemies.emplace_back(std::make_shared<EnemyC>(GetRand(800), GetRand(200)));
-		}
-
-		// 敵削除
-		auto rmvIter = std::remove_if(enemies.begin(), enemies.end(), 
-			[](const std::shared_ptr<IEnemy>& ptr) {
-			return ptr->x > 800.0 || ptr->x < 0.0 || ptr->y > 600.0 || ptr->y < 0.0;
-		});
-
-		enemies.erase(rmvIter, enemies.end());
-
-		for (auto i = enemies.begin(); i < enemies.end(); i++) {
-			(*i)->Update();
-		}
-
-		for (auto i = enemies.begin(); i < enemies.end(); i++) {
-			(*i)->Draw();
-		}
-
-		// 敵の数を表示
-		DrawFormatString(30, 30, GetColor(255, 255, 255), "敵の数 : %d", enemies.size());
-
-		ScreenFlip();//裏画面を表画面にコピー
-	}
-
-	DxLib_End();
 	return 0;
 }
 ```

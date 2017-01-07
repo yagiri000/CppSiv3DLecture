@@ -1,57 +1,4 @@
-#C++講座資料
-
-##string型
-
-C++標準ライブラリのstring型を使うと、Cのchar型に比べ、より簡単に文字列を扱うことが出来る。
-+演算子で文字列の結合、==演算子で文字列の比較が出来る。  
-string型を使用するときは、stringヘッダーをインクルードする。（string.hではないことに注意）
-
-```cpp
-#include <iostream>
-#include <string>
-
-int main(){
-    std::string str1 = "aaa";
-    std::string str2 = "bbb";
-    
-    std::cout << str1 << std::endl;
-    std::cout << str2 << std::endl;
-    
-    std::string str3;
-    // +で文字列の結合ができる
-    str3 = str1 + str2;
-    
-    std::cout << str3 << std::endl;
-    
-    // ==で文字列の比較ができる trueなので1が出力される
-    std::cout << (str3 == (str1+str2)) << std::endl;
-    
-    return 0;
-}
-```
-
-
->std::to_string関数を使うと、int型、double型等の変数をstring型に変換できる。
-
-```cpp
-#include <iostream>
-#include <string>
-
-int main(){
-    std::string str = "aaa";
-	int ix = 23;
-	double dx = 3.14;
-	
-	str += " ";
-	str += std::to_string(ix);
-	str += " ";
-	str += std::to_string(dx);
-    
-    std::cout << str << std::endl;
-    
-    return 0;
-}
-```
+#C++Siv3D講座資料
 
 ##bool型
 C言語では、0は偽、それ以外は真だったが、C++には真偽を表すためだけの型、bool型が存在する。  
@@ -80,13 +27,14 @@ int main(void){
 ```cpp
 #include <iostream>
 
-bool IsEven(int num){
+// 偶数だったらtrue,そうでなければfalseを返す関数
+bool isEven(int num){
 	return (num % 2) == 0;
 }
 
 int main(void){
 
-	if (IsEven(10)){
+	if (isEven(10)){
 		std::cout << "条件文は真" << std::endl;
 	}
 	else{
@@ -107,14 +55,14 @@ int main(void){
 ```cpp
 #include <iostream>
 
-void Func(){
+void func()){
 	int a = 10;
 	std::cout << "aの値は " << a << std::endl;
 }
 
 int main(){
 	
-	Func();
+	func());
 
 	//コメントを外すとコンパイルエラー
 	//a = 100;  
@@ -285,7 +233,7 @@ int main(){
 ```
 
 ## const参照渡し
-関数がクラスを引数に取る時、オブジェクトのコピーが発生している。参照渡しを使うと、コピーが発生することを防ぐことが出来、無駄がなくなる。
+関数・コンストラクタがクラスを引数に取る時、オブジェクトのコピーが発生している。参照渡しを使うと、コピーが発生することを防ぐことが出来、無駄がなくなる。
 また、引数にconstを付けると、関数内で値を変更できなくなる。これは間違って値を書き換えてしまうのを防ぐのに有用である。
 以下は、const参照渡しを使う関数の例である。本資料では以降クラスを引数に取る時、適宜参照渡し、const参照渡しを使っていく。
 
@@ -302,7 +250,7 @@ public:
 	}
 };
 
-void ShowColor(const Color& color) {
+void showColor(const Color& color) {
 	std::cout << "r:" << color.r << " g:" << color.g << " b:" << color.b << std::endl;
 	// コメントを外すと値を書き換えることになるのでコンパイルエラー
 	// color.r = 0;
@@ -312,7 +260,7 @@ int main() {
 
 	Color color(150, 100, 50);
 
-	ShowColor(color);
+	showColor(color);
 
 	return 0;
 }
@@ -323,7 +271,7 @@ int main() {
 
 1. 文字列をうけとりその末尾に「その点トッポってすげぇよな、最後までチョコたっぷりだもん。」と付加するような関数を作れ。  
 
-1. 空の文字列を用意し、入力された文字をその文字列の終端に付け加えていき、"Show"と入力されたら現在の文字列を表示せよ。
+1. 空の文字列を用意し、入力された文字をその文字列の終端に付け加えていき、"show"と入力されたら現在の文字列を表示せよ。
 
 
 ##ポインタ（復習）
@@ -364,10 +312,10 @@ class Vector2{
 public:
 	int x, y;
 
-	Vector2(int xx, int yy)
+	Vector2(int _x, int _y)
 	{
-		x = xx;
-		y = yy;
+		x = _x;
+		y = _y;
 	}
 };
 
@@ -394,22 +342,8 @@ int main(void){
 
 
 
-##演習問題(DXライブラリ)
-今回のは、これまでコードを書いてきたプロジェクトとは別に、サンプルプロジェクトからプロジェクトを作ることを推奨します。
-
-1. string型の変数を用意し、DrawFormatStringToHandle関数を用いて画面中央に表示せよ。はじめの文字列は入力を求めるのではなく、プログラム内で決めてよい。
-
-* DrawFormatStringToHandle関数は引数にstring型ではなくchar\*を取る。  (string型変数).c_str()関数を使うことでstring型の文字列をchar\*へ変換できる。
-
-	>例
-
-	```cpp
-	string str = "aaa";
-	DrawFormatStringToHandle( x , y , Color , FontHandle , str.c_str() ) ;
-	```
-
-
-1. Xキーを押した時に、上記の文字列の末尾に「かわいい」が追加されるようにせよ。
+##演習問題(Siv3D)
+今回は、これまでコードを書いてきたプロジェクトとは別に、プロジェクトを作ることを推奨します。
 
 1. 以下の様なPlayerクラスとEnemyクラスを用意した。PlayerクラスとEnemyクラスのインスタンスを作り、動作を確認せよ。
 
@@ -417,96 +351,90 @@ int main(void){
 
 ```cpp
 #pragma once
+#include <Siv3D.hpp>
 
 class Player {
 public:
-	double x, y, v;
+	Vec2 pos;
+	double speed;
 	Player();
-	void Update();
-	void Draw();
+	void update();
+	void draw();
 };
 ```
 
 >Player.cpp
 
 ```cpp
-#include <DxLib.h>
-#include "myglobal.h"
 #include "Player.h"
 
-
-Player::Player() {
-	x = 400;
-	y = 400;
-	v = 4.5;
+Player::Player() :
+pos(320.0, 240.0),
+speed(5.0)
+{
 }
 
-void Player::Update() {
+void Player::update() {
 	// 上下左右キーで移動
-	if (keyState[KEY_INPUT_RIGHT] > 0) {
-		x += v;
+	if (Input::KeyLeft.pressed) {
+		pos.x -= speed;
 	}
-	if (keyState[KEY_INPUT_LEFT] > 0) {
-		x -= v;
+	if (Input::KeyRight.pressed) {
+		pos.x += speed;
 	}
-	if (keyState[KEY_INPUT_UP] > 0) {
-		y -= v;
+	if (Input::KeyUp.pressed) {
+		pos.y -= speed;
 	}
-	if (keyState[KEY_INPUT_DOWN] > 0) {
-		y += v;
+	if (Input::KeyDown.pressed) {
+		pos.y += speed;
 	}
 }
 
-void Player::Draw() {
-	DrawCircle(x, y, 24, GetColor(0, 0, 255), 1);
+void Player::draw() {
+	Circle(pos, 30.0).draw(Color(0, 0, 255));
 }
-
 ```
 
 >Enemy.h
 
 ```cpp
 #pragma once
+#include <Siv3D.hpp>
 #include "Player.h"
 
 class Enemy {
 public:
-	double x, y, vx, vy;
-	Player *player;
-	Enemy(double xx, double yy);
-	void Update();
-	void Draw();
+	Vec2 pos;
+	Vec2 velocity;
+	Enemy(const Vec2& _pos);
+	void update();
+	void draw();
 };
-
 ```
 
 >Enemy.cpp
 
 ```cpp
-#include <DxLib.h>
-#include "Enemy.h"
+# include "Enemy.h"
 
-Enemy::Enemy(double xx, double yy) {
-	x = xx;
-	y = yy;
-	vx = 0;
-	vy = 1.0;
+Enemy::Enemy(const Vec2& _pos):
+	pos(_pos),
+	velocity(0.0, 0.0)
+{
 }
 
-void Enemy::Update() {
-	x += vx;
-	y += vy;
+void Enemy::update() {
+	pos += velocity;
 }
 
-void Enemy::Draw() {
-	DrawCircle(x, y, 24, GetColor(255, 0, 0), 1);
+void Enemy::draw() {
+	Circle(pos, 30.0).draw(Color(255, 0, 0));
 }
-
 ```
 
 
 1. EnemyがPlayerの方向に移動するようにしたい。Enemyクラスが「Playerクラスへのポインタ」をメンバに持つようにして、PlayerクラスとEnemyクラスのインスタンスを生成した後にEnemyのインスタンスににPlayerのインスタンスのポインタを渡し、そのポインタからPlayerクラスのx,yにアクセスすることでEnemyがPlayerの位置を取得し、その方向に移動できるようにせよ。  
-（今回は、敵の追尾は大まかで良い。例：PlayerのxがEnemyのxより大きければEnemyは右に、そうでなければ左に動く…など）
+（今回は、敵の追尾は大まかでも良い。例：PlayerのxがEnemyのxより大きければEnemyは右に、そうでなければ左に動く…など）
 
 >ヒント
 
@@ -516,28 +444,21 @@ void Enemy::Draw() {
 Enemy.hとmain.cppの二箇所からPlayer.hを読み込むときは、多重インクルードを防ぐため、Player.hの上部に \#pragma once をつける必要がある。  
 
 
->Enemy側
+>Enemy側に以下を追加
 
 ```cpp
-class Enemy{
-public:
-	double x, y, vx, vy;
-
-	Player* pPlayer;//これを追加
+	Player* pPlayer; 
 
 	//ポインタ取得用関数
 	void SetPlayerPtr(Player* ptr){
 		pPlayer = ptr;
 	}
-
-	//以下略
-};
 ```
 
 >初期化処理側
 
 ```cpp
 Player player;//Playerのインスタンスを生成
-Enemy emy;//Enemyのインスタンスを生成
-emy.SetPlayerPtr(&player);//ポインタを入れる
+Enemy Enemy;//Enemyのインスタンスを生成
+Enemy.SetPlayerPtr(&player);//ポインタを入れる
 ```

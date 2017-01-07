@@ -1,4 +1,4 @@
-#C++講座資料
+#C++Siv3D講座資料
 
 ##基底クラスへのポインタ
 
@@ -11,19 +11,19 @@ class Base{
 public:
 	int x;
 
-	Base(int xx):
-		x(xx)
+	Base(int _x):
+		x(_x)
 	{
 	}
 
-	void Show(){
-		std::cout << "Show関数が呼ばれました。　xは:" << x << std::endl;
+	void show(){
+		std::cout << "show関数が呼ばれました。　xは:" << x << std::endl;
 	}
 };
 
 class Derived : public Base{
 public:
-	Derived(int xx) : Base(xx)
+	Derived(int _x) : Base(_x)
 	{
 	}
 	
@@ -34,16 +34,16 @@ int main(void){
 	Base obj_b(100);
 	Derived obj_d(200);
 
-	obj_b.Show();
-	obj_d.Show();
+	obj_b.show();
+	obj_d.show();
 
 	std::cout << std::endl;
 
 	Base *ptr1 = &obj_b;
 	Base *ptr2 = &obj_d; //基底クラスへのポインタに派生クラスのポインタを入れられる
 	
-	ptr1->Show();
-	ptr2->Show();
+	ptr1->show();
+	ptr2->show();
 	
 	std::cout << std::endl;
 
@@ -55,7 +55,7 @@ int main(void){
 ##仮想関数
 
 基底クラスでvirtualをつけ仮想関数を作り、派生クラスでその関数をオーバーライドすることで、派生クラスを指している基底クラスへのポインタから、派生クラスで再定義された関数を呼び出すことが出来るようになる。  
-以下のShow関数のように、クラスの関数の前にvirtualをつけることで仮想関数を定義できる。  
+以下のshow関数のように、クラスの関数の前にvirtualをつけることで仮想関数を定義できる。  
 
 
 ```cpp
@@ -65,25 +65,25 @@ class Base{
 public:
 	int x;
 
-	Base(int xx):
-		x(xx)
+	Base(int _x):
+		x(_x)
 	{
 
 	}
 
-	virtual void Show(){
-		std::cout << "基底クラスのShow関数が呼ばれました。　xは:" << x << std::endl;
+	virtual void show(){
+		std::cout << "基底クラスのshow関数が呼ばれました。　xは:" << x << std::endl;
 	}
 };
 
 class Derived : public Base{
 public:
-	Derived(int xx) : Base(xx)
+	Derived(int _x) : Base(_x)
 	{
 	}
 
-	void Show(){
-		std::cout << "派生クラスのShow関数が呼ばれました。　xは:" << x << std::endl;
+	void show(){
+		std::cout << "派生クラスのshow関数が呼ばれました。　xは:" << x << std::endl;
 	}
 };
 
@@ -92,16 +92,16 @@ int main(void){
 	Base obj_b(100);
 	Derived obj_d(200);
 
-	obj_b.Show();
-	obj_d.Show();
+	obj_b.show();
+	obj_d.show();
 
 	std::cout << std::endl;
 
 	Base *ptr1 = &obj_b;
 	Base *ptr2 = &obj_d; // ptr2は、派生クラスを指している基底クラスへのポインタ
 	
-	ptr1->Show();
-	ptr2->Show();
+	ptr1->show();
+	ptr2->show();
 	
 	std::cout << std::endl;
 
@@ -118,24 +118,24 @@ class Base{
 public:
 	int x;
 
-	Base(int xx):
-		x(xx)
+	Base(int _x):
+		x(_x)
 	{
 	}
 
-	virtual void Show(){
-		std::cout << "基底クラスのShow関数が呼ばれました。　xは:" << x << std::endl;
+	virtual void show(){
+		std::cout << "基底クラスのshow関数が呼ばれました。　xは:" << x << std::endl;
 	}
 };
 
 class Derived : public Base{
 public:
-	Derived(int xx) : Base(xx)
+	Derived(int _x) : Base(_x)
 	{
 	}
 
-	void Show(){
-		std::cout << "派生クラスのShow関数が呼ばれました。　xは:" << x << std::endl;
+	void show(){
+		std::cout << "派生クラスのshow関数が呼ばれました。　xは:" << x << std::endl;
 	}
 };
 
@@ -145,8 +145,8 @@ int main(void){
 	Base *ptr1 = new Base(100);
 	Base *ptr2 = new Derived(200);
 	
-	ptr1->Show();
-	ptr2->Show();
+	ptr1->show();
+	ptr2->show();
 	
 	std::cout << std::endl;
 
@@ -164,25 +164,25 @@ public:
 	int x;
 	
 	//コンストラクタ
-	IEnemy(int xx):
-		x(xx)
+	IEnemy(int _x):
+		x(_x)
 	{
 	}
 
-	virtual void Show(){
-		std::cout << "基底クラスのShow関数が呼ばれました。　xは:" << x << std::endl;
+	virtual void show(){
+		std::cout << "基底クラスのshow関数が呼ばれました。　xは:" << x << std::endl;
 	}
 };
 
 class EnemyA : public IEnemy{
 public:
 	
-	EnemyA(int xx) : IEnemy(xx){
+	EnemyA(int _x) : IEnemy(_x){
 
 	}
 
-	void Show(){
-		std::cout << "EnemyAクラスのShow関数が呼ばれました。 xは:" << x << std::endl;
+	void show(){
+		std::cout << "EnemyAクラスのshow関数が呼ばれました。 xは:" << x << std::endl;
 	}
 };
 
@@ -190,12 +190,12 @@ public:
 class EnemyB : public IEnemy{
 public:
 	
-	EnemyB(int xx) : IEnemy(xx){
+	EnemyB(int _x) : IEnemy(_x){
 
 	}
 
-	void Show(){
-		std::cout << "EnemyBクラスのShow関数が呼ばれました。 xは:" << x << std::endl;
+	void show(){
+		std::cout << "EnemyBクラスのshow関数が呼ばれました。 xは:" << x << std::endl;
 	}
 };
 
@@ -203,12 +203,12 @@ public:
 class EnemyC : public IEnemy{
 public:
 	
-	EnemyC(int xx) : IEnemy(xx){
+	EnemyC(int _x) : IEnemy(_x){
 
 	}
 
-	void Show(){
-		std::cout << "EnemyCクラスのShow関数が呼ばれました。 xは:" << x << std::endl;
+	void show(){
+		std::cout << "EnemyCクラスのshow関数が呼ばれました。 xは:" << x << std::endl;
 	}
 };
 
@@ -220,9 +220,9 @@ int main(void){
 	IEnemy *ptr2 = new EnemyB(200);
 	IEnemy *ptr3 = new EnemyC(300);
 	
-	ptr1->Show();
-	ptr2->Show();
-	ptr3->Show();
+	ptr1->show();
+	ptr2->show();
+	ptr3->show();
 
 	return 0;
 }
@@ -242,25 +242,25 @@ public:
 	int x;
 	
 	//コンストラクタ
-	IEnemy(int xx):
-		x(xx)
+	IEnemy(int _x):
+		x(_x)
 	{
 	}
 
-	virtual void Show(){
-		std::cout << "基底クラスのShow関数が呼ばれました。　xは:" << x << std::endl;
+	virtual void show(){
+		std::cout << "基底クラスのshow関数が呼ばれました。　xは:" << x << std::endl;
 	}
 };
 
 class EnemyA : public IEnemy{
 public:
 	
-	EnemyA(int xx) : IEnemy(xx){
+	EnemyA(int _x) : IEnemy(_x){
 
 	}
 
-	void Show(){
-		std::cout << "EnemyAクラスのShow関数が呼ばれました。 xは:" << x << std::endl;
+	void show(){
+		std::cout << "EnemyAクラスのshow関数が呼ばれました。 xは:" << x << std::endl;
 	}
 };
 
@@ -268,12 +268,12 @@ public:
 class EnemyB : public IEnemy{
 public:
 	
-	EnemyB(int xx) : IEnemy(xx){
+	EnemyB(int _x) : IEnemy(_x){
 
 	}
 
-	void Show(){
-		std::cout << "EnemyBクラスのShow関数が呼ばれました。 xは:" << x << std::endl;
+	void show(){
+		std::cout << "EnemyBクラスのshow関数が呼ばれました。 xは:" << x << std::endl;
 	}
 };
 
@@ -281,12 +281,12 @@ public:
 class EnemyC : public IEnemy{
 public:
 	
-	EnemyC(int xx) : IEnemy(xx){
+	EnemyC(int _x) : IEnemy(_x){
 
 	}
 
-	void Show(){
-		std::cout << "EnemyCクラスのShow関数が呼ばれました。 xは:" << x << std::endl;
+	void show(){
+		std::cout << "EnemyCクラスのshow関数が呼ばれました。 xは:" << x << std::endl;
 	}
 };
 
@@ -295,13 +295,13 @@ public:
 int main(void){
 	std::vector<IEnemy*> vec;
 
-	vec.push_back(new EnemyA(100));
-	vec.push_back(new EnemyB(200));
-	vec.push_back(new EnemyC(300));
+	vec.emplace_back(new EnemyA(100));
+	vec.emplace_back(new EnemyB(200));
+	vec.emplace_back(new EnemyC(300));
 
 	//違うクラスなのに、同じ配列で扱えた！！！！！
 	for(auto i = vec.begin(); i < vec.end(); ++i){
-		(*i)->Show();
+		(*i)->show();
 	}
 
 	return 0;
@@ -321,28 +321,28 @@ class Base{
 public:
 	double x;
 
-	Base(int xx):
-		x(xx)
+	Base(int _x):
+		x(_x)
 	{
 	}
 
-	virtual void Show() = 0;
+	virtual void show() = 0;
 };
 
 class Derived : public Base{
 public:
-	Derived(int xx): Base(xx)
+	Derived(int _x): Base(_x)
 	{
 	}
 
-	void Show(){
-		std::cout << "派生クラスのShowが呼ばれました。 xは:" << x << std::endl;
+	void show(){
+		std::cout << "派生クラスのshowが呼ばれました。 xは:" << x << std::endl;
 	}
 };
 
 int main(void){
 	Base *ptr1 = new Derived(100);
-	ptr1->Show();
+	ptr1->show();
 
 	//コメントを外すと純粋仮想関数をもつクラスをインスタンス化してしまうのでコンパイルエラー
 	//Base b(100);
@@ -355,16 +355,16 @@ int main(void){
 >純粋仮想関数　書き方
 
 virtual 返り値の型 関数名() = 0;
-例：virtual void Show() = 0;
+例：virtual void show() = 0;
 
 
 ##演習問題
 
 1. 以下の様なクラスを作った。Dog,Yojoを参考に、IAnimalクラスを継承したクラスをもう1つ作れ。
 
-1. IAnimal型へのポインタを要素に持つvectorにnewで動的確保したIAnimalの派生クラスへのポインタを適当に複数入れた後、すべてのインスタンスのTalk関数を呼び出せ。  
+1. IAnimal型へのポインタを要素に持つvectorにnewで動的確保したIAnimalの派生クラスへのポインタを適当に複数入れた後、すべてのインスタンスのtalk関数を呼び出せ。  
 
-1. IAnimalのTalk関数を純粋仮想関数にせよ。  
+1. IAnimalのtalk関数を純粋仮想関数にせよ。  
 
 ```cpp
 class IAnimal{
@@ -375,8 +375,8 @@ public:
 
 	}
 
-	virtual void Talk(){
-		std::cout << "基底クラスのTalk関数が呼ばれました。 重さは:" << weight << std::endl;
+	virtual void talk(){
+		std::cout << "基底クラスのtalk関数が呼ばれました。 重さは:" << weight << std::endl;
 	}
 };
 
@@ -386,7 +386,7 @@ public:
 
 	}
 
-	void Talk(){
+	void talk(){
 		std::cout << "わんわん　重さは:" << weight << std::endl;
 	}
 };
@@ -397,13 +397,13 @@ public:
 
 	}
 
-	void Talk(){
+	void talk(){
 		std::cout << "ふぇぇ…　重さは:" << weight << std::endl;
 	}
 };
 ```
 
-##演習問題(DXライブラリ)
+##演習問題(Siv3D)
 
 * 継承によるポリモーフィズムを用いて、敵を数種類作れ。
 

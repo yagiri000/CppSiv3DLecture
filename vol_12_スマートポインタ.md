@@ -1,4 +1,4 @@
-#C++講座資料
+#C++Siv3D講座資料
 
 ##スコープ
 
@@ -29,8 +29,8 @@ int main(void){
 class MyClass{
 public:
 	int x;
-	MyClass(int xx):
-		x(xx)
+	MyClass(int _x):
+		x(_x)
 	{
 		std::cout << "コンストラクタが呼ばれました" << std::endl;
 	}
@@ -70,8 +70,8 @@ int main(void){
 class MyClass{
 public:
 	int x;
-	MyClass(int xx):
-		x(xx)
+	MyClass(int _x):
+		x(_x)
 	{
 		std::cout << "コンストラクタが呼ばれました" << std::endl;
 	}
@@ -115,8 +115,8 @@ newしたポインタは必ずdeleteしなくてはいけない。これは非�
 class MyClass{
 public:
 	int x;
-	MyClass(int xx):
-		x(xx)
+	MyClass(int _x):
+		x(_x)
 	{
 		std::cout << "コンストラクタが呼ばれました" << std::endl;
 	}
@@ -188,6 +188,6 @@ public:
 1. 上記のvectorの中でx > yとなっている要素を削除せよ。
 
 
-##演習問題(DXライブラリ)
+##演習問題(Siv3D)
 
 1. 前回の課題を、Enemyのクラスへのスマートポインタを要素に持つvectorを使って書き直せ。  

@@ -1,7 +1,7 @@
-# C++講座資料
+# C++Siv3D講座資料
 
 今回はC++でのHello World、クラスの基本的な使い方について学ぶ。
-演習では、実際にDXライブラリを用いてPlayer,Enemyを生成し、動かす。
+演習では、実際にSiv3Dを用いてPlayer,Enemyを生成し、動かす。
 
 ## Hello World!
 
@@ -83,9 +83,9 @@ int main(){
 }
 ```
 
-二次元上の座標,2次元ベクトルを表すクラス、Vector2を作った。  
+二次元上の座標や、2次元ベクトルを表すクラス、Vector2を作った。  
 クラスの要素には```.```（コンマ）を使ってアクセスできる。  
-クラスは関数を要素に持つことができ、メンバ関数という。（下の例ではSetData関数がメンバ関数）  
+クラスは関数を要素に持つことができ、メンバ関数という。（下の例ではsetData関数がメンバ関数）  
 
 ```cpp
 #include <iostream>
@@ -94,16 +94,16 @@ class Vector2{
 public:
 	int x;
 	int y;
-	void SetData(int xx, int yy){
-		x = xx;
-		y = yy;
+	void setData(int _x, int _y){
+		x = _x;
+		y = _y;
 	}
 };
 
 int main(){
 
 	Vector2 obj;
-	obj.SetData(13, 29);
+	obj.setData(13, 29);
 	std::cout << obj.x << " " << obj.y << std::endl;
 	
 	return 0;
@@ -111,7 +111,7 @@ int main(){
 ```
 
 ## コンストラクタ
-さっきの例ではVector2クラスを作った後、SetData関数をいちいち呼ばなければならない。
+さっきの例ではVector2クラスを作った後、setData関数をいちいち呼ばなければならない。
 初期化をいちいち行うのは手間がかかるので、C++ではクラス生成時に呼び出されるコンストラクタというものを定義できる。
 
 >コンストラクタの書き方
@@ -130,9 +130,9 @@ public:
 	int x;
 	int y;
 	
-	Vector2(int xx, int yy){
-		x = xx;
-		y = yy;
+	Vector2(int _x, int _y){
+		x = _x;
+		y = _y;
 	}
 };
 
@@ -149,7 +149,7 @@ int main(){
 
 publicやprivateをアクセス修飾子と言う。 publicの要素はクラス外からアクセスでき（公開）、 privateの要素はクラス外からアクセスできない（非公開）。 何も指定されていなければprivateメンバになる。
 privateメンバ変数を用いることで、外から直接書き換えられたくないメンバ変数を書き換えることが出来ないようにできる。  
-privateは隠蔽、カプセル化などにおいて重要な機能だが、この講座では割愛する(基本的に全てpublicを使い、privateはあまり使用・説明しない)。  
+privateは隠蔽、カプセル化などにおいて重要な機能だが、この講座では割愛する(基本的に全てpublicを使い、privateはあまり使用しない)。  
 
 ```cpp
 #include <iostream>
@@ -191,7 +191,7 @@ public:
 	MyClass(){
 		data = 3;
 	}
-	int GetData(){
+	int getData(){
 		return data;
 	}
 };
@@ -203,7 +203,7 @@ int main(){
     // コメントを外すとコンパイルエラー
     // obj.data = 100;
 
-    std::cout << obj.GetData() << std::endl;
+    std::cout << obj.getData() << std::endl;
     
     return 0;
 }
@@ -249,8 +249,8 @@ int main(){
 
 1. 以下の様なクラスVector3を作った。  
 適当なコンストラクタを作れ。  
-x,y,zの値を表示するメンバ関数Showを作り、動作を確認せよ。  
-x\*y\*zの値を表示するメンバ関数ShowMultipleを作り、動作を確認せよ。  
+x,y,zの値を表示するメンバ関数showを作り、動作を確認せよ。  
+x\*y\*zの値を表示するメンバ関数showMultipleを作り、動作を確認せよ。  
 
 		class Vector3{
 		public:
@@ -258,29 +258,30 @@ x\*y\*zの値を表示するメンバ関数ShowMultipleを作り、動作を確�
 		};
 
 
-## 演習問題(DXライブラリ)
+## 演習問題(Siv3D)
 
 1. 以下の様なPlayerクラスを作り、矢印キーで動くようにせよ。
 
 		class Player{
 		public:
-			double x, y;
+			double x, y, speed;
 
 			Player(){
-				x = 200;
-				y = 200;
+				x = 320.0;
+				y = 240.0;
+				speed = 5.0;
 			}
-			void Update(){
+			void update(){
 				//ここを実装
 				//矢印キーで移動
 			}
 			//自機（円）を描画
-			void Draw(){
-				DrawCircle(x, y, 10, GetColor(0, 0, 255), 1);
+			void draw(){
+				Circle(x, y, 30.0).draw(Color(0, 0, 255));
 			}
 		};
 
-1. Playerクラスの実体を作り、メインループ内でUpdate関数とDraw関数を呼び出してPlayerクラスを動作させよ。
+1. Playerクラスの実体を作り、メインループ内でupdate関数とdraw関数を呼び出してPlayerクラスを動作させよ。(ヒント：while内でプレイヤーのインスタンスを作成すると、毎フレーム破棄されてしまう)
 
 1. 以下の様なEnemyクラスを作り、Playerクラスと同様に実体を作り動作を確認せよ。  
 今回作るEnemyはただ下に移動するだけでよい。
@@ -291,13 +292,13 @@ x\*y\*zの値を表示するメンバ関数ShowMultipleを作り、動作を確�
 
 			//ここに座標を指定できるようなコンストラクタを実装	
 
-			void Update(){
+			void update(){
 				//ここを実装
 				//下方向に移動
 			}
 			//敵（円）を描画
-			void Draw(){
-				DrawCircle(x, y, 10, GetColor(255, 0, 0), 1);
+			void draw(){
+				Circle(x, y, 30.0).draw(Color(255, 0, 0));
 			}
 		};
 
