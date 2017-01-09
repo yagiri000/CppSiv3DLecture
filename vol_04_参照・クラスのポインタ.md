@@ -448,7 +448,7 @@ Enemy.hとmain.cppの二箇所からPlayer.hを読み込むときは、多重イ
 	Player* pPlayer; 
 
 	//ポインタ取得用関数
-	void SetPlayerPtr(Player* ptr){
+	void setPlayerPtr(Player* ptr){
 		pPlayer = ptr;
 	}
 ```
@@ -458,5 +458,5 @@ Enemy.hとmain.cppの二箇所からPlayer.hを読み込むときは、多重イ
 ```cpp
 Player player;//Playerのインスタンスを生成
 Enemy Enemy;//Enemyのインスタンスを生成
-Enemy.SetPlayerPtr(&player);//ポインタを入れる
+Enemy.setPlayerPtr(&player);//ポインタを入れる
 ```

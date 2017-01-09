@@ -126,12 +126,12 @@ Circle(x, y, radius).draw(Color(r, g, b));
 ```
 
 > 詳しい説明(読み飛ばしてもらって構いません)  
-Main関数に入った時、Fontクラスのインスタンスが生成され、フォントサイズには18が指定される。    
-while()内の```System::Update()```が1/60秒ごとに実行され、グラフィックスと入力(キーボード・マウス)の更新が行われる。  
-```System::update```は終了イベントが発生した場合や、エンジンの内部でエラーが発生した場合falseを返しwhileを抜け、プログラムが終了する。  
-int型のmouseX,mouseY変数を用意し、```Mouse::Pos()```関数で取得したPoint構造体のメンバx,yを毎フレームmouseX,MouseYに入れている。  
-fontクラスのoperator()にマウス座標が入った変数と説明の文字MouseX:,MouseYを渡し、```L"MouseX:", mouseX, L" MouseY:", mouseY```を指定し、返り値としてDrawableStringを取得し、そのままdraw関数を呼び画面上に描画を行っている。  
-Circleクラスのインスタンスを座標(mouseX,mouseY)、半径50で作成し、同時にdraw関数を呼び描画を行っている。draw関数には色を指定するためColor構造体を生成と同時に渡している。今回は(r=255,g=128,b=0)でオレンジを指定した。  
+> Main関数に入った時、Fontクラスのインスタンスが生成され、フォントサイズには18が指定される。    
+> while()内の```System::Update()```が1/60秒ごとに実行され、グラフィックスと入力(キーボード・マウス)の更新が行われる。  
+> ```System::update```は終了イベントが発生した場合や、エンジンの内部でエラーが発生した場合falseを返しwhileを抜け、プログラムが終了する。  
+> int型のmouseX,mouseY変数を用意し、```Mouse::Pos()```関数で取得したPoint構造体のメンバx,yを毎フレームmouseX,MouseYに入れている。  
+> fontクラスのoperator()にマウス座標が入った変数と説明の文字MouseX:,MouseYを渡し、```L"MouseX:", mouseX, L" MouseY:", mouseY```を指定し、返り値としてDrawableStringを取得し、そのままdraw関数を呼び画面上に描画を行っている。  
+> Circleクラスのインスタンスを座標(mouseX,mouseY)、半径50で作成し、同時にdraw関数を呼び描画を行っている。draw関数には色を指定するためColor構造体を生成と同時に渡している。今回は(r=255,g=128,b=0)でオレンジを指定した。  
 
 ## キー入力に応じて数字を増加する例
 以下の例では、Zキーを押している間、毎フレームnumが1ずつ増えていき、Xキーを押したフレームにnumが100増え、Cキーを押したフレームにnumが0~100のランダムな値になる例を示している。  

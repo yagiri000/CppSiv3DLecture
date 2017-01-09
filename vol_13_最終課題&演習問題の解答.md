@@ -21,6 +21,8 @@ public:
 	virtual void talk() {
 		std::cout << "基底クラスのtalk関数が呼ばれました。 重さは:" << weight << std::endl;
 	}
+
+	virtual ~IAnimal() = default;
 };
 
 class Dog : public IAnimal {
