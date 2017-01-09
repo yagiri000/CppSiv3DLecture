@@ -1,4 +1,4 @@
-#cpp講座資料
+# C++Siv3D講座資料　　
 
 ##GameManagerクラス
 実際ゲームを作る時、PlayerやEnemyの配列、Bulletの配列、Effectの配列等をメンバに持ち、それらを管理するManagerクラスを作ると便利である。  
