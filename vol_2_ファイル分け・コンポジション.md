@@ -280,29 +280,6 @@ int main(){
 }
 ```
 
-## Tips : クラスと構造体について
-C++でのクラス(class)と構造体(struct)には、メンバーのデフォルトのアクセス属性が
-privateであるか、publicであるかの違いしかない。Siv3Dには2次元座標を表す構造体、Vec2があるが、クラスと同じように扱える。（ちなみに、正確にはVec2はテンプレートクラスVector2Dでのテンプレート引数doubleを指定した、Vector2D<double>である)。それと、F12で定義を見に行けばわかると思うが、CircleもColorも構造体である。以後も、本資料では、構造体のこともクラスと呼ぶ場合がある。  
-
-
-## Tips : クラス内定数
-以下のようにすると、クラス内に定数を用意することができる。以下の例ではMyClassにHoge定数を用意している。また、アクセス属性がpublicなので、外からもアクセスできるが、その場合は```Myclass::Hoge```のようにアクセスする。
-
-> MyClass.cpp
-
-```cpp
-class MyClass {
-public:
-	static const int Hoge;
-};
-```
-
-> MyClass.h
-
-```cpp
-const int MyClass::Hoge = 3;
-```
-
 
 ##演習問題(Siv3D)
 
@@ -319,3 +296,33 @@ const int MyClass::Hoge = 3;
 Circle(position, radius).draw(Color(r, g, b));
 ```
 
+
+## Tips : クラスと構造体について
+C++でのクラス(class)と構造体(struct)には、メンバーのデフォルトのアクセス属性が
+privateであるか、publicであるかの違いしかない。Siv3Dには2次元座標を表す構造体、Vec2があるが、クラスと同じように扱える。（ちなみに、正確にはVec2はテンプレートクラスVector2Dでのテンプレート引数doubleを指定した、Vector2D<double>である)。それと、F12で定義を見に行けばわかると思うが、CircleもColorも構造体である。以後も、本資料では、構造体のこともクラスと呼ぶ場合がある。  
+
+
+## Tips : クラス内定数
+以下のようにすると、クラス内に定数を用意することができる。以下の例ではMyClassにint型のHoge定数、いつも自作しているVector2クラスの定数を用意している。これらは、アクセス属性がpublicなので、外からもアクセスできるが、その場合は```Myclass::Hoge```のようにアクセスする。MyClass.cppで```const int MyClass::Hoge = 3;```のように書いているが、関数やコンストラクタ同様に、クラスの名前空間を```MyClass::```のように指定し忘れないように注意！
+
+> MyClass.h
+
+```cpp
+class MyClass {
+public:
+	static const int Hoge;
+	static const Vector2 FirstPos;
+	void func();
+};
+```
+
+> MyClass.cpp
+
+```cpp
+const int MyClass::Hoge = 3;
+const Vector2 MyClass::FirstPos(100, 200);
+
+void MyClass::func(){
+	std::cout << "aaa" << std::endl;
+}
+```

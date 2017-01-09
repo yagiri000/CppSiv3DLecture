@@ -1,8 +1,8 @@
-#C++講座 最終課題
+#C++Siv3D講座 最終課題＆演習問題解答
 
-前半の課題をポリモーフィズムを用いて書き直せ。練習として、敵の基底クラスへのスマートポインタのvectorに派生クラスを入れ、敵の削除にはremove_ifとラムダ式を使うこと。    
+前半の課題をポリモーフィズムを用いて書き直せ。練習として、敵の基底クラスへのスマートポインタのvectorに派生クラスを入れ、敵の削除にはremove_ifとラムダ式を使うこと。解答例は例のごとく添付資料内にある。  
 
-以下にVol9~Vol12の演習問題(コンソール)の解答例を示す。
+以下にVol9~Vol12の演習問題(コンソール)の解答例を示す。  
 
 ## vol_10課題(コンソール)
 
@@ -29,7 +29,7 @@ public:
 
 	}
 
-	void talk() {
+	void talk() override {
 		std::cout << "わんわん　重さは:" << weight << std::endl;
 	}
 };
@@ -40,7 +40,7 @@ public:
 
 	}
 
-	void talk() {
+	void talk() override {
 		std::cout << "ふぇぇ…　重さは:" << weight << std::endl;
 	}
 };
@@ -51,7 +51,7 @@ public:
 
 	}
 	
-	void talk() {
+	void talk() override {
 		std::cout << "にゃー　重さは:" << weight << std::endl;
 	}
 };

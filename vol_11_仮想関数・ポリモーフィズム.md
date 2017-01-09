@@ -55,7 +55,7 @@ int main(void){
 ##仮想関数
 
 基底クラスでvirtualをつけ仮想関数を作り、派生クラスでその関数をオーバーライドすることで、派生クラスを指している基底クラスへのポインタから、派生クラスで再定義された関数を呼び出すことが出来るようになる。  
-以下のshow関数のように、クラスの関数の前にvirtualをつけることで仮想関数を定義できる。  
+以下は、show関数をオーバーライドしている例。メンバ関数の前にvirtualをつけることで仮想関数を定義できる。また、派生クラスでは、override指定子をつけてオーバーライドを明示しながらshow関数をオーバーライドしている。  
 
 
 ```cpp
@@ -82,7 +82,7 @@ public:
 	{
 	}
 
-	void show(){
+	void show() override {
 		std::cout << "派生クラスのshow関数が呼ばれました。　xは:" << x << std::endl;
 	}
 };
@@ -181,7 +181,7 @@ public:
 
 	}
 
-	void show(){
+	void show() override {
 		std::cout << "EnemyAクラスのshow関数が呼ばれました。 xは:" << x << std::endl;
 	}
 };
@@ -194,7 +194,7 @@ public:
 
 	}
 
-	void show(){
+	void show() override {
 		std::cout << "EnemyBクラスのshow関数が呼ばれました。 xは:" << x << std::endl;
 	}
 };
@@ -207,7 +207,7 @@ public:
 
 	}
 
-	void show(){
+	void show() override {
 		std::cout << "EnemyCクラスのshow関数が呼ばれました。 xは:" << x << std::endl;
 	}
 };
@@ -259,7 +259,7 @@ public:
 
 	}
 
-	void show(){
+	void show() override {
 		std::cout << "EnemyAクラスのshow関数が呼ばれました。 xは:" << x << std::endl;
 	}
 };
@@ -272,7 +272,7 @@ public:
 
 	}
 
-	void show(){
+	void show() override {
 		std::cout << "EnemyBクラスのshow関数が呼ばれました。 xは:" << x << std::endl;
 	}
 };
@@ -285,7 +285,7 @@ public:
 
 	}
 
-	void show(){
+	void show() override {
 		std::cout << "EnemyCクラスのshow関数が呼ばれました。 xは:" << x << std::endl;
 	}
 };
@@ -308,7 +308,7 @@ int main(void){
 }
 ```
 
-##純粋仮想関数
+## 純粋仮想関数
 
 純粋仮想関数を作ると、そのクラスはインスタンス化出来なくなる。
 上の例では敵A,B,Cの基底クラスにIEnemyが定義されているが、このようなクラスをインターフェイスを定義するクラスという。
@@ -386,7 +386,7 @@ public:
 
 	}
 
-	void talk(){
+	void talk() override {
 		std::cout << "わんわん　重さは:" << weight << std::endl;
 	}
 };
@@ -397,14 +397,154 @@ public:
 
 	}
 
-	void talk(){
+	void talk() override {
 		std::cout << "ふぇぇ…　重さは:" << weight << std::endl;
 	}
 };
 ```
 
-##演習問題(Siv3D)
+## 演習問題(Siv3D)
 
-* 継承によるポリモーフィズムを用いて、敵を数種類作れ。
+* 前回のプログラムを書き換え、継承によるポリモーフィズムを用いて、敵を数種類作れ。
 
 
+## ヒント : 複数ファイルにおけるoverrideの書き方  
+以下の例はDerivedクラス内でshow関数をオーバーライドした例。override指定子はクラス内の関数宣言(.hのほう)にはつけるが、関数定義(cppのほう)にはつけない。
+
+> Derived.h
+
+```cpp
+class Derived : public IBase {
+public:
+	void show() override;
+};
+```
+
+> Derived.cpp
+
+```cpp
+void Derived::show() {
+	std::cout << "派生クラスのshow関数が呼ばれました。" << std::endl;
+}
+```
+
+
+## Tips : override指定子  
+実は、override指定子がなくてもオーバーライドすることはできる。しかし、override指定子を用いてオーバーライドを明示することで、コンパイラにoverrideしていることを明示し、ミスを防ぐことができる。  
+以下は、show関数を派生クラスでオーバーライドするつもりだったが、showaaとミスタイプしてしまった例。override指定子を用いてoverrideを明示しているが、showaaという名前の仮想関数はないので、コンパイルしようとするとコンパイルエラーになり、オーバーライドしそびれていることに早い段階で気づけるようになっている。  
+*※以下の例はコンパイルできない！！*
+
+```cpp
+// このソースコードはコンパイル不可
+#include <iostream>
+
+class Base {
+public:
+	virtual void show() {
+		std::cout << "基底クラスのshow関数が呼ばれました。" << std::endl;
+	}
+};
+
+class Derived : public Base {
+public:
+	// 本当はshowとタイプするつもりだったが、showaとミスタイプしてしまった例。コンパイルできない。
+	void showaa() override {
+		std::cout << "派生クラスのshow関数が呼ばれました。" << std::endl;
+	}
+};
+
+int main(void) {
+	Base base;
+	Derived derived;
+
+	base.show();
+	derived.show();
+
+	return 0;
+}
+```
+
+
+## Tips :　ポリモーフィズム用基底クラスには仮想デストラクタが必要
+以下の例では、Baseを継承したDerivedクラスを作り、Derivedをnewした後、そのポインタをBaseへのポインタに入れ、その後deleteしている。また、基底クラスBaseで仮想デストラクタを定義、派生クラスDerivedでデストラクタをオーバーライドし定義している。  
+DerivedクラスをさすBaseクラスのポインタを解放した際、Baseクラスに仮想デストラクタがないと、Baseクラスとしての領域のみ解放されてしまい、Derivedクラスの領域が解放されない。よって、ポリモーフィズムのための基底クラスには仮想デストラクタの宣言が必要である。
+
+```cpp
+#include <iostream>
+
+class Base {
+public:
+	int x;
+	
+	Base(int _x) :
+		x(_x)
+	{
+	}
+
+	// 仮想デストラクタを定義
+	virtual ~Base() {
+		std::cout << "仮想デストラクタ~Baseが呼ばれました。" << std::endl;
+	};
+};
+
+class Derived : public Base {
+public:
+	Derived(int _x) :
+		Base(_x)
+	{
+	}
+
+	// デストラクタをオーバーライドし定義
+	~Derived() {
+		std::cout << "デストラクタ~Derivedが呼ばれました。" << std::endl;
+	};
+};
+
+
+int main(void) {
+
+	Base* ptr = new Derived(10);
+	delete ptr;
+
+	return 0;
+}
+```
+
+デストラクタの中身が特にない場合は、以下のようにdefaultをつけてデストラクタの中身の生成をコンパイラに任せることができる。また、派生クラスのデストラクタは自動生成されるもので問題ないので、書かなくてもよい。
+
+```cpp
+#include <iostream>
+
+class Base {
+public:
+	int x;
+	
+	Base(int _x) :
+		x(_x)
+	{
+	}
+
+	// 仮想デストラクタを定義
+	virtual ~Base() = default;
+};
+
+class Derived : public Base {
+public:
+	Derived(int _x) :
+		Base(_x)
+	{
+	}
+
+	// デストラクタをオーバーライドし定義
+	~Derived() = default;
+};
+
+
+int main(void) {
+
+	Base* ptr = new Derived(10);
+	delete ptr;
+
+	return 0;
+}
+```

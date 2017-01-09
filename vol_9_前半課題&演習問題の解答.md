@@ -259,6 +259,29 @@ int main() {
 }
 ```
 
+## vol_4課題(コンソール)
+
+```cpp
+#include <iostream>
+
+void twiceRef(int &x) {
+	x *= 2;
+}
+
+
+int main(void) {
+
+	int num = 3;
+
+	std::cout << num << std::endl;
+
+	twiceRef(num);
+
+	std::cout << num << std::endl;
+
+	return 0;
+}
+```
 
 
 ## vol_5課題1(コンソール)

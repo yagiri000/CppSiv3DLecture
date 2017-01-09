@@ -159,38 +159,41 @@ public:
 
 ```cpp
 #pragma once
+#include <Siv3D.hpp>
 
 class Enemy {
 public:
-	double x, y, vx, vy;
-	Enemy(double _x, double _y);
+	static const double Radius;
+
+	Vec2 pos;
+	Vec2 velocity;
+	Enemy(const Vec2& _pos);
 	void update();
 	void draw();
 };
-
 ```
 
 >Enemy.cpp
 
 ```cpp
-#include <Siv3D.h>
-#include "Enemy.h"
+# include "Enemy.h"
 
-Enemy::Enemy(double _x, double _y) {
-	x = _x;
-	y = _y;
-	vx = GetRand(10) - 5;
-	vy = GetRand(10) - 5;
+const double Enemy::Radius = 30.0;
+
+Enemy::Enemy(const Vec2& _pos):
+	pos(_pos),
+	velocity(RandomVec2(5.0))
+{
 }
 
 void Enemy::update() {
-	x += vx;
-	y += vy;
+	pos += velocity;
 }
 
 void Enemy::draw() {
-	drawCircle(x, y, 24, GetColor(255, 0, 0), 1);
+	Circle(pos, Radius).draw(Color(255, 0, 0));
 }
+
 ```
 
 1. Enemy型へのポインタを要素に持つvectorを用意し、newを使って敵を複数生成せよ。 
@@ -207,3 +210,43 @@ void Enemy::draw() {
 			it++;
 		}
 	}
+
+
+## Tips :　ポリモーフィズムのための基底クラスには仮想デストラクタをつけよう
+
+```cpp
+#include <iostream>
+
+class Base{
+public:
+	Base(int _x):
+		x(_x)
+	{
+	}
+	int x;
+	void show(){
+		std::cout << "x:" << x << std::endl;
+	}
+	virtual ~Base() = 0;
+};
+
+class Derived : public Base{
+public:
+	Derived(int _x):
+		Base(_x)
+	{
+	}
+};
+
+
+int main(void){
+
+	Base obj_b(12);
+	obj_b.show();
+
+	Derived obj_d(23);
+	obj_d.show();
+
+	return 0;
+}
+```
