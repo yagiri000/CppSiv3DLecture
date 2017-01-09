@@ -3,7 +3,7 @@
 ##GameManagerクラス
 実際ゲームを作る時、PlayerやEnemyの配列、Bulletの配列、Effectの配列等をメンバに持ち、それらを管理するManagerクラスを作ると便利である。  
 今回は、PlayerとEnemyを持つManagerクラスの実体をグローバル変数にすることで、EnemyがPlayerが相互にアクセスする例を示す。
-(前回は、EnemyクラスがPlayerへのポインタを持つことで、Playerクラスにアクセスすることができたが、今回はEnemyクラスがPlayerクラスへのポインタを持つ必要はない)　　
+(前回は、EnemyクラスがPlayerへのポインタを持つことで、Playerクラスにアクセスすることができたが、今回はEnemyクラスがPlayerクラスへのポインタを持つ必要はない)  
 PlayerがEnemyの情報に、EnemyがPlayerの情報に相互にアクセス出来るようにするため、上手くファイルをインクルードしなければならない。  
 以下の例では、PlayerはshowEnemyX関数でEnemyのxにアクセスし、EnemyはshowPlayerX関数でPlayerのxにアクセスしている。  
 
@@ -134,6 +134,46 @@ int main() {
 ## 演習問題(コンソール)  
 
 * 上記のPlayerクラスのx, Enemyクラスのxはpublicメンバで、値を取得するだけでなく直接書き換えることが可能であり、危険である。この2つをprivateメンバにし、外から値が取得できるようにgetX()関数を実装せよ。また、それに伴いshowPlayerX, showEnemyX関数の中身も書き換えよ。（今回はprivateの使用例を紹介するためgetter関数を用意するが、煩雑になるため、本資料ではこの後も基本的にprivateは使用しない。）  
+
+## Tips : range-based-for
+これまでvectorに対して、for文で用いる時、毎回始めのイテレータと終わりのイテレータを書いていたが、これは面倒である。C++にはrange-based-forがありこれを用いると、配列のそれぞれの要素に対して行う処理が簡単に書ける。以下に書き方を示す。  
+
+```cpp
+for(配列の要素の型 受け取る変数 : 配列名){
+
+}
+```
+
+以下にサンプルコードを用意した。今回は、自分で用意したMyClass型のvectorのそれぞれの要素に対して処理を行っている。配列の要素の型はautoで推論している。また、参照を用いて、無駄なコピーを防いでいる。```auto&&```と、&が1つではなく2つあるがタイプミスではない。```auto&&```を用いると右辺値にも対応できるようになり、```auto&```より汎用的な書き方になるので、range-based-forを用いる際は基本的にこちらを推奨する。(ちなみに、VisualStudio上でマウスカーソルを```i```の上に持っていくとわかるが、```i```はちゃんとMyClass&と推論されていることがわかる)詳しくは、[range-based for loopsの要素の型について](http://qiita.com/rinse_/items/cdfce8aa6a685a8ebe0c)参照。
+
+```cpp
+#include <iostream>
+#include <vector>
+
+class MyClass {
+public:
+	int a;
+	MyClass(int _a) :
+		a(_a) 
+	{
+	}
+};
+
+int main(void) {
+
+	std::vector<MyClass> vec;
+	for (int i = 0; i < 5; i++) {
+		vec.emplace_back(MyClass(i));
+	}
+
+	for (auto&& i : vec) {
+		std::cout << i.a << std::endl;
+	}
+
+	return 0;
+}
+```
+
 
 
 ## 演習問題(Siv3D)
