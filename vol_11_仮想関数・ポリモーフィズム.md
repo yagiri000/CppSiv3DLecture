@@ -300,8 +300,8 @@ int main(void){
 	vec.emplace_back(new EnemyC(300));
 
 	//違うクラスなのに、同じ配列で扱えた！！！！！
-	for(auto i = vec.begin(); i < vec.end(); ++i){
-		(*i)->show();
+	for(const auto& enemy : vec){
+		enemy->show();
 	}
 
 	return 0;

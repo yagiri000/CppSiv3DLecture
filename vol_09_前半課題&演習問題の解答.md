@@ -273,8 +273,115 @@ int main() {
 
 
 
+## vol_7課題1(コンソール)
 
-## vol_7課題(コンソール)
+```cpp
+#include <iostream>
+
+int main() {
+
+	auto twice = [](int x) {
+		return x * 2;
+	};
+
+	int num = 3;
+	
+	std::cout << twice(num) << std::endl;
+
+	return 0;
+}
+```
+
+## vol_7課題2(コンソール)
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+int main() {
+	std::vector<int> vec;
+	
+	// vectorに0から9の数を入れる
+	for (int i = 0; i < 10; i++) {
+		vec.emplace_back(i);
+	}
+
+	//表示
+	for (auto i = vec.begin(); i < vec.end(); ++i) {
+		std::cout << *i << " ";
+	}
+	std::cout << std::endl;
+
+	// 2の倍数を後ろに詰め、削除
+	auto rmvIter = std::remove_if(vec.begin(), vec.end(), 
+		[](int i) {return i % 2 == 0; }
+	);
+	vec.erase(rmvIter, vec.end());
+
+	//表示
+	for (auto i = vec.begin(); i < vec.end(); ++i) {
+		std::cout << *i << " ";
+	}
+	std::cout << std::endl;
+
+	return 0;
+}
+```
+
+## vol_7課題3(コンソール)
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <memory>
+
+class MyClass {
+public:
+	int a;
+
+	MyClass(int _a) :
+		a(_a)
+	{
+	}
+};
+
+
+int main() {
+
+	std::vector<MyClass> vec;
+
+	for (int i = 0; i < 10; i++) {
+		vec.emplace_back(MyClass(rand() % 10));
+	}
+
+	// vectorの中身を表示
+	for (auto i = vec.begin(); i < vec.end(); i++) {
+		std::cout << i->a << " ";
+	}
+	std::cout << std::endl;
+
+	// vecの中から5以下のaを持つ要素を後ろに詰める
+	auto rmvIter = std::remove_if(vec.begin(), vec.end(), [](const MyClass& ins) {
+		return ins.a <= 5;
+	});
+
+	// 実際に削除
+	vec.erase(rmvIter, vec.end());
+
+	// vectorの中身を表示
+	for (auto i = vec.begin(); i < vec.end(); i++) {
+		std::cout << i->a << " ";
+	}
+	std::cout << std::endl;
+
+	return 0;
+}
+```
+
+
+## vol_8課題(コンソール)
 
 > main.cpp
 
