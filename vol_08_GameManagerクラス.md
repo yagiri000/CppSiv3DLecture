@@ -144,7 +144,7 @@ for(配列の要素の型 受け取る変数 : 配列名){
 }
 ```
 
-以下にサンプルコードを用意した。今回は、自分で用意したMyClass型のvectorのそれぞれの要素に対して処理を行っている。配列の要素の型はautoで推論している。また、参照を用いて、無駄なコピーを防いでいる。```auto&&```と、&が1つではなく2つあるがタイプミスではない。```auto&&```を用いると右辺値にも対応できるようになり、```auto&```より汎用的な書き方になるので、range-based-forを用いる際は基本的にこちらを推奨する。(ちなみに、VisualStudio上でマウスカーソルを```i```の上に持っていくとわかるが、```i```はちゃんとMyClass&と推論されていることがわかる)詳しくは、[range-based for loopsの要素の型について](http://qiita.com/rinse_/items/cdfce8aa6a685a8ebe0c)参照。
+以下にサンプルコードを用意した。今回は、自分で用意したMyClass型のvectorのそれぞれの要素のaを表示している。配列の要素の型はautoで推論している。かつconstを使うことで値を間違って変更することを防いでおり、参照を用いて、無駄なコピーをが発生しないようにしている。
 
 ```cpp
 #include <iostream>
@@ -166,13 +166,54 @@ int main(void) {
 		vec.emplace_back(MyClass(i));
 	}
 
-	for (auto&& i : vec) {
+	for (const auto& i : vec) {
 		std::cout << i.a << std::endl;
+
+		// コメントを外すと値を書き換えることになるのでコンパイルエラー
+		// i.a = 99;
 	}
 
 	return 0;
 }
 ```
+
+以下はMyClassのaを全て2倍にする例。参照を用いて、vectorの中身を書き換えている。```auto&&```と、&が1つではなく2つあるがタイプミスではない。今回の場合```auto&```でも問題ないが、```auto&&```を用いると右辺値にも対応できるようになり、より汎用的な書き方になるので、range-based-forを用いる際は基本的にこちらを推奨する。(ちなみに、VisualStudio上でマウスカーソルを```i```の上に持っていくとわかるが、```i```はちゃんとMyClass&と推論されていることがわかる)詳しくは、[range-based for loopsの要素の型について](http://qiita.com/rinse_/items/cdfce8aa6a685a8ebe0c)参照。
+
+```cpp
+#include <iostream>
+#include <vector>
+
+class MyClass {
+public:
+	int a;
+	MyClass(int _a) :
+		a(_a) 
+	{
+	}
+};
+
+int main(void) {
+
+	std::vector<MyClass> vec;
+	for (int i = 0; i < 5; i++) {
+		vec.emplace_back(MyClass(i));
+	}
+
+	// 参照を用いてそれぞれのMyClassのaを2倍に
+	for (auto&& i : vec) {
+		i.a *= 2;
+	}
+
+	// 中身を表示
+	for (const auto& i : vec) {
+		std::cout << i.a << std::endl;
+	}
+
+	return 0;
+}
+
+```
+
 
 
 
