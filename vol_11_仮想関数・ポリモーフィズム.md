@@ -29,7 +29,7 @@ public:
 	
 };
 
-int main(void){
+int main(){
 
 	Base obj_b(100);
 	Derived obj_d(200);
@@ -78,7 +78,8 @@ public:
 
 class Derived : public Base{
 public:
-	Derived(int _x) : Base(_x)
+	Derived(int _x) : 
+		Base(_x)
 	{
 	}
 
@@ -87,7 +88,7 @@ public:
 	}
 };
 
-int main(void){
+int main(){
 
 	Base obj_b(100);
 	Derived obj_d(200);
@@ -130,7 +131,8 @@ public:
 
 class Derived : public Base{
 public:
-	Derived(int _x) : Base(_x)
+	Derived(int _x) : 
+		Base(_x)
 	{
 	}
 
@@ -140,7 +142,7 @@ public:
 };
 
 
-int main(void){
+int main(){
 
 	Base *ptr1 = new Base(100);
 	Base *ptr2 = new Derived(200);
@@ -159,26 +161,27 @@ int main(void){
 ```cpp
 #include <iostream>
 
-class IEnemy{
+class IEnemy {
 public:
 	int x;
-	
+
 	//コンストラクタ
-	IEnemy(int _x):
+	IEnemy(int _x) :
 		x(_x)
 	{
 	}
 
-	virtual void show(){
+	virtual void show() {
 		std::cout << "基底クラスのshow関数が呼ばれました。　xは:" << x << std::endl;
 	}
 };
 
-class EnemyA : public IEnemy{
+class EnemyA : public IEnemy {
 public:
-	
-	EnemyA(int _x) : IEnemy(_x){
 
+	EnemyA(int _x) :
+		IEnemy(_x)
+	{
 	}
 
 	void show() override {
@@ -187,11 +190,12 @@ public:
 };
 
 
-class EnemyB : public IEnemy{
+class EnemyB : public IEnemy {
 public:
-	
-	EnemyB(int _x) : IEnemy(_x){
 
+	EnemyB(int _x) : 
+		IEnemy(_x) 
+	{
 	}
 
 	void show() override {
@@ -200,11 +204,12 @@ public:
 };
 
 
-class EnemyC : public IEnemy{
+class EnemyC : public IEnemy {
 public:
-	
-	EnemyC(int _x) : IEnemy(_x){
 
+	EnemyC(int _x) :
+		IEnemy(_x) 
+	{
 	}
 
 	void show() override {
@@ -214,12 +219,12 @@ public:
 
 
 
-int main(void){
+int main() {
 
 	IEnemy *ptr1 = new EnemyA(100);
 	IEnemy *ptr2 = new EnemyB(200);
 	IEnemy *ptr3 = new EnemyC(300);
-	
+
 	ptr1->show();
 	ptr2->show();
 	ptr3->show();
@@ -237,26 +242,27 @@ int main(void){
 #include <iostream>
 #include <vector>
 
-class IEnemy{
+class IEnemy {
 public:
 	int x;
-	
+
 	//コンストラクタ
-	IEnemy(int _x):
+	IEnemy(int _x) :
 		x(_x)
 	{
 	}
 
-	virtual void show(){
+	virtual void show() {
 		std::cout << "基底クラスのshow関数が呼ばれました。　xは:" << x << std::endl;
 	}
 };
 
-class EnemyA : public IEnemy{
+class EnemyA : public IEnemy {
 public:
-	
-	EnemyA(int _x) : IEnemy(_x){
 
+	EnemyA(int _x) : 
+		IEnemy(_x) 
+	{
 	}
 
 	void show() override {
@@ -265,11 +271,12 @@ public:
 };
 
 
-class EnemyB : public IEnemy{
+class EnemyB : public IEnemy {
 public:
-	
-	EnemyB(int _x) : IEnemy(_x){
 
+	EnemyB(int _x) :
+		IEnemy(_x) 
+	{
 	}
 
 	void show() override {
@@ -278,11 +285,12 @@ public:
 };
 
 
-class EnemyC : public IEnemy{
+class EnemyC : public IEnemy {
 public:
-	
-	EnemyC(int _x) : IEnemy(_x){
 
+	EnemyC(int _x) :
+		IEnemy(_x) 
+	{
 	}
 
 	void show() override {
@@ -292,7 +300,7 @@ public:
 
 
 
-int main(void){
+int main() {
 	std::vector<IEnemy*> vec;
 
 	vec.emplace_back(new EnemyA(100));
@@ -300,7 +308,7 @@ int main(void){
 	vec.emplace_back(new EnemyC(300));
 
 	//違うクラスなのに、同じ配列で扱えた！！！！！
-	for(const auto& enemy : vec){
+	for (const auto& enemy : vec) {
 		enemy->show();
 	}
 
@@ -317,11 +325,11 @@ int main(void){
 ```cpp
 #include <iostream>
 
-class Base{
+class Base {
 public:
 	double x;
 
-	Base(int _x):
+	Base(int _x) :
 		x(_x)
 	{
 	}
@@ -329,18 +337,19 @@ public:
 	virtual void show() = 0;
 };
 
-class Derived : public Base{
+class Derived : public Base {
 public:
-	Derived(int _x): Base(_x)
+	Derived(int _x) : 
+		Base(_x)
 	{
 	}
 
-	void show(){
+	void show() {
 		std::cout << "派生クラスのshowが呼ばれました。 xは:" << x << std::endl;
 	}
 };
 
-int main(void){
+int main() {
 	Base *ptr1 = new Derived(100);
 	ptr1->show();
 
@@ -358,7 +367,7 @@ virtual 返り値の型 関数名() = 0;
 例：virtual void show() = 0;
 
 
-##演習問題
+##演習問題(コンソール)
 
 1. 以下の様なクラスを作った。Dog,Yojoを参考に、IAnimalクラスを継承したクラスをもう1つ作れ。
 
@@ -367,23 +376,26 @@ virtual 返り値の型 関数名() = 0;
 1. IAnimalのtalk関数を純粋仮想関数にせよ。  
 
 ```cpp
-class IAnimal{
+class IAnimal {
 public:
 	double weight;//重さ
 
-	IAnimal(int w) : weight(w){
+	IAnimal(int w) :
+		weight(w) 
+	{
 
 	}
 
-	virtual void talk(){
+	virtual void talk() {
 		std::cout << "基底クラスのtalk関数が呼ばれました。 重さは:" << weight << std::endl;
 	}
 };
 
-class Dog : public IAnimal{
+class Dog : public IAnimal {
 public:
-	Dog(int w) : IAnimal(w){
-
+	Dog(int w) : 
+		IAnimal(w) 
+	{
 	}
 
 	void talk() override {
@@ -391,10 +403,11 @@ public:
 	}
 };
 
-class Yojo : public IAnimal{
+class Yojo : public IAnimal {
 public:
-	Yojo(int w) : IAnimal(w){
-
+	Yojo(int w) : 
+		IAnimal(w) 
+	{
 	}
 
 	void talk() override {
@@ -453,7 +466,7 @@ public:
 	}
 };
 
-int main(void) {
+int main() {
 	Base base;
 	Derived derived;
 
@@ -501,7 +514,7 @@ public:
 };
 
 
-int main(void) {
+int main() {
 
 	Base* ptr = new Derived(10);
 	delete ptr;
@@ -540,7 +553,7 @@ public:
 };
 
 
-int main(void) {
+int main() {
 
 	Base* ptr = new Derived(10);
 	delete ptr;

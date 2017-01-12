@@ -159,7 +159,7 @@ public:
 	}
 };
 
-int main(void) {
+int main() {
 
 	std::vector<MyClass> vec;
 	for (int i = 0; i < 5; i++) {
@@ -192,7 +192,7 @@ public:
 	}
 };
 
-int main(void) {
+int main() {
 
 	std::vector<MyClass> vec;
 	for (int i = 0; i < 5; i++) {
@@ -229,8 +229,6 @@ EnemyクラスがPlayerクラスへのポインタを持っていた場合、そ
 
 1. Enemyクラス内にint型のkind変数を作り、kind変数によって敵が多様な動きをするようにせよ。  
 (kind==1なら自機に直進、kind==2ならsin軌道、kind==3なら出た位置で円運動…など)  
-kindの値は敵の生成時にGetRand()などで適当に決めて良い。add関数の引数で指定できても良い。    
-ちなみに、GetRand(3)とすると、0,1,2,3のどれかが返ってくる。0,1,2でないことに注意。
 
 1. kindによって敵の色が変わるようにせよ。
 
@@ -260,11 +258,11 @@ public:
 	}
 };
 
-int main(void) {
+int main() {
 	// コンストラクタでkindを指定
 	Hoge ins(Hoge::B);
 
-	// 出力。内部的には整数（0から始まる）
+	// 出力。整数が出力される（0から始まる）
 	std::cout << ins.kind << std::endl;
 
 	return 0;

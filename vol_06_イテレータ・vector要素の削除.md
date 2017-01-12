@@ -206,11 +206,10 @@ int main(){
 }
 ```
 
-##演習問題
+##演習問題(コンソール)
 
 1. 以下のようなクラスを用意した。MyClassのvectorを作り、適当なa,bの値(0~100ぐらい)をもつデータを10個ほど格納し、イテレータを用いたfor文によって表示せよ。  
 
-		```cpp
 		#include <iostream>
 
 		class MyClass{
@@ -218,64 +217,57 @@ int main(){
 			int a;
 			int b;
 
-			MyClass(int _a, int bb):
+			MyClass(int _a, int _b):
 				a(_a),
-				b(bb)
+				b(_b)
 			{
 			}
 		};
-		```
 
 1. aがbより小さいデータを削除し、再度表示せよ。  
 
 
 
 ##演習問題(Siv3D)
-今回はvol_3のSiv3D演習問題の続きから作るか、新しくサンプルプロジェクトからプログラムを書くことをオススメする。いずれにせよ今回はプレイヤーはいてもいなくてもいいし、敵がポインタ経由でプレイヤーの情報を受け取る必要はない。
+今回はvol_3のSiv3D演習問題の続きから作るか、新しくサンプルプロジェクトからプログラムを書くことをオススメする。いずれにせよ今回はプレイヤーはいなくていいし、敵がポインタ経由でプレイヤーの情報を受け取る必要はない。  
 
 1. 以下のようなEnemyクラスを用意した。Enemyのvectorを作り、敵を複数出せ。forループは、イテレータを用いて書くこと。
 
-		>Enemy.h
+	>Enemy.h
 
-		```cpp
-			#pragma once
-			#include <Siv3D.hpp>
+		#pragma once
+		#include <Siv3D.hpp>
 
-			class Enemy {
-			public:
-				Vec2 pos;
-				Vec2 velocity;
-				Enemy(const Vec2& _pos);
-				void update();
-				void draw();
-			};
-		```
+		class Enemy {
+		public:
+			Vec2 pos;
+			Vec2 velocity;
+			Enemy(const Vec2& _pos);
+			void update();
+			void draw();
+		};
 
-		>Enemy.cpp
+	>Enemy.cpp
 
-		```cpp
-			# include "Enemy.h"
+		# include "Enemy.h"
 
-			Enemy::Enemy(const Vec2& _pos):
-				pos(_pos),
-				velocity(RandomVec2(5.0))
-			{
-				// RandomVec2(double length)
-				// 半径length(今回は5.0)の2次元ベクトルを返す
-			}
+		Enemy::Enemy(const Vec2& _pos):
+			pos(_pos),
+			velocity(RandomVec2(5.0))
+		{
+			// RandomVec2(double length)
+			// 半径length(今回は5.0)の2次元ベクトルを返す
+		}
 
-			void Enemy::update() {
-				pos += velocity;
-			}
+		void Enemy::update() {
+			pos += velocity;
+		}
 
-			void Enemy::draw() {
-				Circle(pos, 30.0).draw(Color(255, 0, 0));
-			}
-		```
+		void Enemy::draw() {
+			Circle(pos, 30.0).draw(Color(255, 0, 0));
+		}
 
 1. 前回の課題で、y座標が480を超えた敵(下の方の画面外に出た敵)を削除するようにせよ。  
-
-1. 画面外に出た敵を削除するようにせよ。
-
-ヒント：```Window::Width()```関数でウィンドウの幅を、```Window::Height```関数でウィンドウのサイズを取得できる。ちなみに、デフォルトの画面サイズは640*480である。
+1. 画面外に出た敵を削除するようにせよ。  
+ヒント：```Window::Width()```関数でウィンドウの幅を、```Window::Height()```関数でウィンドウのサイズを取得できる。ちなみに、デフォルトの画面サイズは640*480である。
 

@@ -7,7 +7,7 @@ C言語では、0は偽、それ以外は真だったが、C++には真偽を表
 ```cpp
 #include <iostream>
 
-int main(void){
+int main(){
 
 	bool b = true;
 
@@ -32,7 +32,7 @@ bool isEven(int num){
 	return (num % 2) == 0;
 }
 
-int main(void){
+int main(){
 
 	if (isEven(10)){
 		std::cout << "条件文は真" << std::endl;
@@ -164,30 +164,30 @@ int main(){
 }
 ```
 
->参照を用いたaとbを入れ替える関数
+>参照を用いたaとbを入れ替える関数。正しくaとbの値が入れ替わっており、かつポインタを用いた例より読みやすく書けていることがわかる。  
 
 ```cpp
 #include <iostream>
 //aとbを入れ替える関数
-void swap(int& a,int& b){
-    int tmp=a;
-    a=b;
-    b=tmp;
-    return;
+void swap(int& a, int& b) {
+	int tmp = a;
+	a = b;
+	b = tmp;
+	return;
 }
 
-int main(){
- 
-    int a=3;
-    int b=5;
- 
-    std::cout << a << "," << b << std::endl;
-    
-    swap(a, b);
-    
-    std::cout << a << "," << b << std::endl;
- 
-    return 0;
+int main() {
+
+	int a = 3;
+	int b = 5;
+
+	std::cout << a << "," << b << std::endl;
+
+	swap(a, b);
+
+	std::cout << a << "," << b << std::endl;
+
+	return 0;
 }
 ```
 
@@ -198,15 +198,15 @@ int main(){
 
 int main(){
  
-    int Hoge = 2;
+    int hoge = 2;
  
-    //aliasはHogeの別名(aliasを操作するとHogeの値が変わる)
-    int& alias = Hoge;
+    //aliasはhogeの別名(aliasを操作するとhogeの値が変わる)
+    int& alias = hoge;
     
-    std::cout << Hoge << ", " << alias << std::endl;
+    std::cout << hoge << ", " << alias << std::endl;
     
     alias=4;
-    std::cout << Hoge << ", " << alias << std::endl;
+    std::cout << hoge << ", " << alias << std::endl;
  
     return 0;
 }
@@ -219,14 +219,14 @@ int main(){
 
 int main(){
  
-    int Hoge = 2;
+    int hoge = 2;
  
-    int* ptr = &Hoge;
+    int* ptr = &hoge;
     
-    std::cout << Hoge << ", " << *ptr << std::endl;
+    std::cout << hoge << ", " << *ptr << std::endl;
     
     *ptr = 4;
-    std::cout << Hoge << ", " << *ptr << std::endl;
+    std::cout << hoge << ", " << *ptr << std::endl;
  
     return 0;
 }
@@ -243,10 +243,11 @@ int main(){
 class Color {
 public:
 	int r, g, b;
-	Color(int r_, int g_, int b_) {
-		r = r_;
-		g = g_;
-		b = b_;
+	Color(int _r, int _g, int _b) :
+	r(_r),
+	g(_g),
+	b(_b)
+	{
 	}
 };
 
@@ -267,7 +268,7 @@ int main() {
 ```
 
 
-##演習問題
+##演習問題(コンソール)
 
 1. 参照でint型をうけとり2倍にする関数を作れ。  
 
@@ -279,7 +280,7 @@ int main() {
 ```cpp
 #include <iostream>
 
-int main(void){
+int main(){
 
 	int a = 100;
 	int *ptr = &a;
@@ -317,7 +318,7 @@ public:
 	}
 };
 
-int main(void){
+int main(){
 
 	Vector2 obj(12, 34);
 	Vector2 *ptr = &obj;
@@ -345,90 +346,83 @@ int main(void){
 
 1. 以下の様なPlayerクラスとEnemyクラスを用意した。PlayerクラスとEnemyクラスのインスタンスを作り、動作を確認せよ。
 
->Player.h
+	>Player.h
 
-```cpp
-#pragma once
-#include <Siv3D.hpp>
+		#pragma once
+		#include <Siv3D.hpp>
 
-class Player {
-public:
-	Vec2 pos;
-	double speed;
-	Player();
-	void update();
-	void draw();
-};
-```
+		class Player {
+		public:
+			static const double Speed;
+			Vec2 pos;
+			Player();
+			void update();
+			void draw();
+		};
 
->Player.cpp
+	>Player.cpp
 
-```cpp
-#include "Player.h"
+		#include "Player.h"
 
-Player::Player() :
-pos(320.0, 240.0),
-speed(5.0)
-{
-}
+		const double Player::Speed = 5.0;
 
-void Player::update() {
-	// 上下左右キーで移動
-	if (Input::KeyLeft.pressed) {
-		pos.x -= speed;
-	}
-	if (Input::KeyRight.pressed) {
-		pos.x += speed;
-	}
-	if (Input::KeyUp.pressed) {
-		pos.y -= speed;
-	}
-	if (Input::KeyDown.pressed) {
-		pos.y += speed;
-	}
-}
+		Player::Player() :
+		pos(320.0, 240.0)
+		{
+		}
 
-void Player::draw() {
-	Circle(pos, 30.0).draw(Color(0, 0, 255));
-}
-```
+		void Player::update() {
+			// 上下左右キーで移動
+			if (Input::KeyLeft.pressed) {
+				pos.x -= Speed;
+			}
+			if (Input::KeyRight.pressed) {
+				pos.x += Speed;
+			}
+			if (Input::KeyUp.pressed) {
+				pos.y -= Speed;
+			}
+			if (Input::KeyDown.pressed) {
+				pos.y += Speed;
+			}
+		}
 
->Enemy.h
+		void Player::draw() {
+			Circle(pos, 30.0).draw(Color(0, 0, 255));
+		}
 
-```cpp
-#pragma once
-#include <Siv3D.hpp>
-#include "Player.h"
+	>Enemy.h
 
-class Enemy {
-public:
-	Vec2 pos;
-	Vec2 velocity;
-	Enemy(const Vec2& _pos);
-	void update();
-	void draw();
-};
-```
+		#pragma once
+		#include <Siv3D.hpp>
+		#include "Player.h"
 
->Enemy.cpp
+		class Enemy {
+		public:
+			Vec2 pos;
+			Vec2 velocity;
+			Enemy(const Vec2& _pos);
+			void update();
+			void draw();
+		};
 
-```cpp
-# include "Enemy.h"
+	>Enemy.cpp
 
-Enemy::Enemy(const Vec2& _pos):
-	pos(_pos),
-	velocity(0.0, 0.0)
-{
-}
+		# include "Enemy.h"
 
-void Enemy::update() {
-	pos += velocity;
-}
+		Enemy::Enemy(const Vec2& _pos):
+			pos(_pos),
+			velocity(0.0, 0.0)
+		{
+		}
 
-void Enemy::draw() {
-	Circle(pos, 30.0).draw(Color(255, 0, 0));
-}
-```
+		void Enemy::update() {
+			pos += velocity;
+		}
+
+		void Enemy::draw() {
+			Circle(pos, 30.0).draw(Color(255, 0, 0));
+		}
 
 
 1. EnemyがPlayerの方向に移動するようにしたい。Enemyクラスが「Playerクラスへのポインタ」をメンバに持つようにして、PlayerクラスとEnemyクラスのインスタンスを生成した後にEnemyのインスタンスににPlayerのインスタンスのポインタを渡し、そのポインタからPlayerクラスのx,yにアクセスすることでEnemyがPlayerの位置を取得し、その方向に移動できるようにせよ。  
@@ -436,8 +430,7 @@ void Enemy::draw() {
 
 >ヒント
 
-プログラムは、上から順にコンパイラに解釈されていく。Enemyクラス内でPlayerクラスにアクセスするには、アクセスする前にPlayerクラスの中身をコンパイラが知らなければならない。  
-今回の場合、main.cppの上部で、 \#include "Player.h" が \#include "Enemy.h" より前に書かれていれば、コンパイラがPlayerの中身を知ってからEnemy.hを解釈するので問題ない。  
+プログラムは、上から順にコンパイラに解釈されていく。Enemyクラス内でPlayerクラスにアクセスするには、アクセスする前にPlayerクラスの中身をコンパイラが知らなければならない。今回の場合、main.cppの上部で、 \#include "Player.h" が \#include "Enemy.h" より前に書かれていれば、コンパイラがPlayerの中身を知ってからEnemy.hを解釈するので問題ない。  
 \#include "Enemy.h" を \#include "Player.h" より前に書きたいときは、Enemy.hがインクルードされる前にどこかのヘッダー、またはEnemy.hの上部に \#include "Player.h" があればよい。  
 Enemy.hとmain.cppの二箇所からPlayer.hを読み込むときは、多重インクルードを防ぐため、Player.hの上部に \#pragma once をつける必要がある。  
 

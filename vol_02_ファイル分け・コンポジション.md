@@ -26,10 +26,9 @@ public:
 ```cpp
 #include "Player.h"
 
-Player::Player(int _x, int _y) :
-x(_x),
-y(_y)
-{
+Player::Player(int _x, int _y) {
+	x = _x;
+	y = _y;
 }
 
 void Player::update(){
@@ -51,7 +50,7 @@ void Player::showXY(){
 #include <iostream>
 #include "Player.h"
 
-int main(void){
+int main(){
 
 	Player player(20, 30);
 	player.update();
@@ -63,9 +62,36 @@ int main(void){
 ```
 
 
-## ショートカット
+## Tips : ショートカット
 複数のファイルに分けると関数やクラスの定義を見に行くのに時間がかかるが、VisualStudio2015では、関数、クラスにカーソルを合わせた状態で```F12```を押すと定義に移動できる。もとのカーソル位置に戻りたい場合は、```Ctrl + -```でもとの位置に戻ることができる。```Ctrl + ,```でクラス、関数を検索して移動できる。他にも様々なショートカットがあるので、インターネットで調べるか、コード上で右クリックして出るダイアログを見て調べてみよう。  
 
+
+##コンストラクタの書き方 その2(メンバイニシャライザ)
+コンストラクタの数値の初期化は以下のようにも書くことができる。自分で定義したクラスをなど初期化する場合、こう書いたほうが、インスタンスのコピーが発生しなくなるため処理が早くなる。以後はこの書き方、メンバイニシャライザを使って初期化を行う。  
+
+```cpp
+#include <iostream>
+
+class Vector2{
+public:
+	int x;
+	int y;
+	
+	Vector2(int _x, int _y):
+	x(_x),
+	y(_y)	
+	{
+	}
+};
+
+int main(){
+
+    Vector2 obj(1, 2);
+    std::cout << obj.x << " " << obj.y << std::endl;
+    
+    return 0;
+}
+```
 
 ##コンポジション
 クラスをクラスのメンバにすることが出来る。  
@@ -89,15 +115,15 @@ public:
 	Vector2 pos;
 	int hp;
 
-	Player(int x, int y, int hp_) :
-		pos(x, y),
-		hp(hp_)
+	Player(int _x, int _y, int _hp) :
+		pos(_x, _y),
+		hp(_hp)
 	{
 	}
 };
 
 
-int main(void){
+int main(){
 	Player player(100, 200, 64);
 
 	std::cout << "x:" << player.pos.x << ", y:" << player.pos.y << std::endl;
@@ -157,7 +183,7 @@ public:
 };
 
 
-int main(void){
+int main(){
 
 	Piyo piyo(100, 200);
 
@@ -233,7 +259,7 @@ public:
 #include "Player.h"
 #include "Enemy.h"
 
-int main(void){
+int main(){
 
 	Player player(100, 200);
 	Enemy enemy(300, 400);
@@ -253,37 +279,9 @@ int main(void){
 
 
 
-##コンストラクタの書き方 その2(メンバイニシャライザ)
-コンストラクタの数値の初期化は以下のようにも書くことができる。自分で定義したクラスをなど初期化する場合、こう書いたほうが、インスタンスのコピーが発生しなくなるため処理が早くなる。以後はこの書き方、メンバイニシャライザを使って初期化を行う。  
-
-```cpp
-#include <iostream>
-
-class Vector2{
-public:
-	int x;
-	int y;
-	
-	Vector2(int _x, int _y):
-	x(_x),
-	y(_y)	
-	{
-	}
-};
-
-int main(){
-
-    Vector2 obj(1, 2);
-    std::cout << obj.x << " " << obj.y << std::endl;
-    
-    return 0;
-}
-```
-
-
 ##演習問題(Siv3D)
 
-1. Playerクラス, Enemyクラスのコンストラクタの初期化を今回教えた形式で書き直せ。  
+1. 前回の演習問題で作ったプログラムのPlayerクラス, Enemyクラスのコンストラクタの初期化を今回教えた形式、メンバイニシャライザで書き直せ。  
 
 1. 前回Siv3Dで作ったプロジェクト上で、Player.h, Player.cpp, Enemy.h, Enemy.cppを作り、PlayerクラスとEnemyクラスをファイル分けせよ。  
 
@@ -311,7 +309,7 @@ privateであるか、publicであるかの違いしかない。Siv3Dには2次�
 class MyClass {
 public:
 	static const int Hoge;
-	static const Vector2 FirstPos;
+	static const Vec2 FirstPos;
 	void func();
 };
 ```
@@ -320,7 +318,7 @@ public:
 
 ```cpp
 const int MyClass::Hoge = 3;
-const Vector2 MyClass::FirstPos(100, 200);
+const Vec2 MyClass::FirstPos(100, 200);
 
 void MyClass::func(){
 	std::cout << "aaa" << std::endl;

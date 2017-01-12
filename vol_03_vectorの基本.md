@@ -75,7 +75,7 @@ public:
 };
 
 
-int main(void){
+int main(){
 
 	std::vector<MyClass> vec;
 
@@ -85,7 +85,7 @@ int main(void){
 	}
 
 	//要素MyClassのxを表示
-	for(int i = 0; i < (int)vec.size(); i++){
+	for(int i = 0; i < vec.size(); i++){
 		std::cout << vec[i].x << " ";
 	}
 
@@ -204,7 +204,7 @@ EnemyManagerクラスを作り、敵を管理せよ。
 				// ここを実装
 			}
 
-			void EnemyManager::add(Vec2 pos)
+			void EnemyManager::add(Enemy enemy)
 			{
 				// ここを実装
 			}

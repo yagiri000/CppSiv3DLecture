@@ -7,7 +7,7 @@
 ```cpp
 #include <iostream>
 
-int main(void){
+int main(){
 
 	{
 		int a = 30;
@@ -41,7 +41,7 @@ public:
 };
 
 
-int main(void){
+int main(){
 
 	std::cout << "メイン関数に入りました" << std::endl;
 
@@ -82,7 +82,7 @@ public:
 };
 
 
-int main(void){
+int main(){
 
 	std::cout << "メイン関数に入りました" << std::endl;
 
@@ -127,7 +127,7 @@ public:
 };
 
 
-int main(void){
+int main(){
 
 	std::cout << "メイン関数に入りました" << std::endl;
 
@@ -166,7 +166,7 @@ std::shared_ptr<MyClass> sptr = std::make_shared<MyClass>(100);
 std::shared_ptr<クラス名> 変数名 = std::make_shared<クラス名>(引数1, 引数2, ...);
 ```
 
-##演習問題
+##演習問題(コンソール)
 
 1. 以下のような2次元座標を表すVector2クラスを用意した。Vector2クラスへのスマートポインタを要素に持つvectorを用意し、適当な座標を10個ほどmake_sharedで動的確保して追加し、表示せよ。
 
@@ -174,9 +174,9 @@ std::shared_ptr<クラス名> 変数名 = std::make_shared<クラス名>(引数1
 class Vector2{
 public:
 	int x, y;
-	Vector2(int x_, int y_)
-	:x(x_),
-	y(y_)
+	Vector2(int _x, int _y)
+	:x(_x),
+	y(_y)
 	{
 	}
 	~Vector2() {
