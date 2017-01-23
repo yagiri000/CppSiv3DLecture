@@ -1,7 +1,7 @@
 #C++Siv3D講座資料
 
 ##bool型
-C言語では、0は偽、それ以外は真だったが、C++には真偽を表すためだけの型、bool型が存在する。  
+C++には真偽を表すためだけの型、bool型が存在する。  
 
 
 ```cpp
@@ -430,9 +430,8 @@ int main(){
 
 >ヒント
 
-プログラムは、上から順にコンパイラに解釈されていく。Enemyクラス内でPlayerクラスにアクセスするには、アクセスする前にPlayerクラスの中身をコンパイラが知らなければならない。今回の場合、main.cppの上部で、 \#include "Player.h" が \#include "Enemy.h" より前に書かれていれば、コンパイラがPlayerの中身を知ってからEnemy.hを解釈するので問題ない。  
-\#include "Enemy.h" を \#include "Player.h" より前に書きたいときは、Enemy.hがインクルードされる前にどこかのヘッダー、またはEnemy.hの上部に \#include "Player.h" があればよい。  
-Enemy.hとmain.cppの二箇所からPlayer.hを読み込むときは、多重インクルードを防ぐため、Player.hの上部に \#pragma once をつける必要がある。  
+プログラムは、上から順にコンパイラに解釈されていく。Enemyクラス内でPlayerクラスにアクセスするには、アクセスする前にPlayerクラスの中身をコンパイラが知らなければならない。よって、Enemy.hからPlayer.hをincludeしている。
+Enemy.hとmain.cppの二箇所からPlayer.hを読み込むときは、多重インクルードを防ぐため、Player.hの上部に #pragma once をつける必要がある。
 
 
 >Enemy側に以下を追加
